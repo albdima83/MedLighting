@@ -1,0 +1,5 @@
+export { default as Error } from './Error'
+export { default as NotFound } from './NotFound'
+export { default as Splash } from './Splash'
+export { default as Home } from './Home'
+export { default as VideoPage } from './VideoPage'

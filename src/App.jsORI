@@ -1,0 +1,484 @@
+/*
+ * If not stated otherwise in this file or this component's LICENSE file the
+ * following copyright and licenses apply:
+ *
+ * Copyright 2020 Metrological
+ *
+ * Licensed under the Apache License, Version 2.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { Lightning, Utils, Colors, Router } from '@lightningjs/sdk'
+import { Carousel, List } from '@lightningjs/ui'
+import Background from './components/Background'
+import Menu from './widgets/Menu'
+import routes from './routes/routes'
+
+class ImageCell extends Lightning.Component {
+  static _template() {
+    return {
+      Shadow: {
+        alpha: 0,
+        mount: 0.5,
+        x: w => w / 2,
+        y: h => h / 2,
+        w: w => w + 90,
+        h: h => h + 90,
+        color: Colors('shadow').get(),
+        rect: true,
+        shader: { type: Lightning.shaders.FadeOut, fade: 32 },
+      },
+      ImageWrapper: {
+        w: w => w,
+        h: h => h,
+        rtt: true,
+        shader: { type: Lightning.shaders.RoundedRectangle, radius: 4 },
+        Fill: { w: w => w, h: h => h, color: Colors('black').get(), rect: true },
+        Image: {
+          alpha: 0.2,
+          mount: 0.5,
+          y: w => w / 2,
+          x: h => h / 2,
+        },
+      },
+      Focus: {
+        alpha: 0,
+        x: 4,
+        y: 4,
+        w: w => w - 8,
+        h: h => h - 8,
+        rect: true,
+        shader: {
+          type: Lightning.shaders.RoundedRectangle,
+          radius: 3,
+          stroke: 2,
+          strokeColor: 0xffffffff,
+          blend: 1,
+          fillColor: 0x00ffffff,
+        },
+      },
+      Label: {
+        mountX: 1,
+        mountY: 1,
+        y: h => h - 5,
+        x: w => w - 30,
+        color: Colors('black').get(),
+        text: { fontFace: 'Londrina', fontSize: 50 },
+      },
+      FocusRing: {
+        alpha: 0,
+      },
+    }
+  }
+
+  /*
+  set item(obj) {
+    console.log(`ImageCell w: [${this.w}]`)
+    console.log(`ImageCell h: [${this.h}]`)
+    const { title, src } = obj
+    this.patch({
+      ImageWrapper: {
+        Image: {
+          alpha: 0.6,
+          src: src,
+          texture: {
+            type: Lightning.textures.ImageTexture,
+            src: src,
+            resizeMode: { type: 'contain', w: this.w, h: this.h },
+          },
+          //h: this.h * 0.7,
+          //w: this.h * 0.7,
+        },
+      },
+      Label: { text: title.toString() },
+    })
+  }*/
+  _updateItem() {
+    const { title, src } = this.item
+    this.patch({
+      ImageWrapper: {
+        Image: {
+          alpha: 0.6,
+          src: src,
+          texture: {
+            type: Lightning.textures.ImageTexture,
+            src: src,
+            resizeMode: { type: 'contain', w: this.w, h: this.h },
+          },
+          //h: this.h * 0.7,
+          //w: this.h * 0.7,
+        },
+      },
+      Label: { text: title.toString() },
+    })
+  }
+
+  _init() {
+    const image = this.tag('Image')
+    image.on('txLoaded', () => {
+      image.setSmooth('alpha', 1)
+    })
+    image.on('txError', () => {
+      console.log('error')
+    })
+    this._focusAnimation = this.animation({
+      duration: 0.2,
+      actions: [
+        { p: 'scale', v: { 0: 1, 1: 1.075 } },
+        { t: 'Shadow', p: 'alpha', v: { 0: 0, 1: 1 } },
+        { t: 'Label', p: 'scale', v: { 0: 1, 1: 1.1 } },
+        {
+          t: 'Label',
+          p: 'color',
+          v: {
+            0: Colors('white')
+              .alpha(0.4)
+              .get(),
+            1: Colors('red').get(),
+          },
+        },
+        { t: 'Focus', p: 'alpha', v: { 0: 0, 1: 1 } },
+      ],
+    })
+  }
+
+  _update() {
+    console.log(`_update  w:[${this.w}]`)
+    console.log(`_update h:[${this.h}]`)
+    this._updateItem()
+    /*
+    this.patch({
+      ImageWrapper: {
+        Image: {
+          color: Colors(`color${Math.floor(Math.random() * 7) + 1}`).get(),
+          h: this.h * 0.7,
+          w: this.h * 0.7,
+        },
+      },
+      Focus: {
+        color: Colors(this.fireAncestors('$getThemeColor'))
+          .darker(0.5)
+          .get(),
+      },
+    })*/
+  }
+
+  _firstEnable() {}
+
+  _firstActive() {
+    this._update()
+  }
+
+  _focus() {
+    if (this._focusAnimation) {
+      this._focusAnimation.start()
+    }
+  }
+
+  _unfocus() {
+    this._focusAnimation.stop()
+  }
+
+  static get width() {
+    return 400
+  }
+
+  static get height() {
+    return 240
+  }
+}
+
+class MenuItem extends Lightning.Component {
+  static _template() {
+    return {
+      h: 50,
+      w: 200,
+      rect: true,
+      Label: {
+        y: h => h / 2,
+        mountY: 0.5,
+        color: 0xff000000,
+        text: { fontSize: 32 },
+      },
+    }
+  }
+
+  set label(value) {
+    this.tag('Label').text = value.toString()
+  }
+
+  _focus() {
+    this.patch({
+      smooth: { color: 0xff763ffc },
+      Label: {
+        smooth: { color: 0xffffffff },
+      },
+    })
+  }
+
+  _unfocus() {
+    this.patch({
+      smooth: { color: 0xffffffff },
+      Label: {
+        smooth: { color: 0xff000000 },
+      },
+    })
+  }
+}
+
+class Tile extends Lightning.Component {
+  static _template() {
+    return {
+      w: 300,
+      h: 350,
+      rect: true,
+      Image: {
+        w: w => w,
+        h: h => h - 50,
+      },
+      Label: {
+        x: 10,
+        y: 302,
+        color: 0xff000000,
+        text: { fontSize: 32 },
+      },
+    }
+  }
+
+  set item(obj) {
+    const { label, src } = obj
+    this.patch({
+      Image: { src },
+      Label: { text: label.toString() },
+    })
+  }
+
+  _focus() {
+    this.patch({
+      smooth: { color: 0xff763ffc, scale: 1.1 },
+      Label: {
+        smooth: { color: 0xffffffff },
+      },
+    })
+  }
+
+  _unfocus() {
+    this.patch({
+      smooth: { color: 0xffffffff, scale: 1.0 },
+      Label: {
+        smooth: { color: 0xff000000 },
+      },
+    })
+  }
+}
+
+class HList extends Lightning.Component {
+  static _template() {
+    return {
+      MyList: {
+        w: w => w,
+        h: h => h + 32,
+        type: List,
+        direction: 'row',
+      },
+      Slider: {
+        w: 800,
+        h: 350,
+        x: 480,
+        y: 300,
+        mount: 0.5,
+        Wrapper: {},
+      },
+    }
+  }
+
+  _getFocused() {
+    //return this.tag('Slider.Wrapper').children[this.index]
+    return this.tag('MyList')
+  }
+  _initCarousel() {
+    this.index = 0
+    this.dataLength = 100
+    const buttons = []
+    for (let i = 0; i < this.dataLength; i++) {
+      const idImg = i % 5
+      buttons.push({
+        type: ImageCell,
+        margin: 15,
+        item: { title: `Train ${i + 1}`, src: Utils.asset(`images/${idImg}.jpg`) },
+      })
+    }
+    this.tag('MyList').add(buttons)
+    this.tag('MyList').scroll = {
+      after: 0, //start scrolling after 3 items
+      jump: 1, //after three items jump three Items
+      forward: 0.9, //unless last item: scroll forward if item bounds are after 90% of the List, or if value is above 1; scroll after f.e. 900 pixels
+      backward: 0.1, //unless first item: scroll backward if item bounds are before 10% of the List, or if value is above 1; scroll before f.e. 50 pixels
+    }
+  }
+
+  _init() {
+    //this._initMenu()
+    //this._initSlider()
+    //this._initCarousel()
+  }
+
+  static get width() {
+    return 1920
+  }
+
+  static get height() {
+    return 300
+  }
+}
+
+export default class App extends Lightning.Component {
+  static getFonts() {
+    return [{ family: 'Regular', url: Utils.asset('fonts/Roboto-Regular.ttf') }]
+  }
+
+  static _template() {
+    return {
+      Background: typeof Background,
+      Fill: { w: w => w, h: h => h, color: Colors('blue').get(), rect: true },
+      Widgets: {
+        Menu: {
+          type: Menu,
+          x: 90,
+          y: 90,
+          zIndex: 99,
+          visible: false,
+          lineOffset: 24,
+          items: [
+            { label: 'Movies', id: 'movie', selected: true },
+            { label: 'TV', id: 'tv', selected: false },
+            { label: 'Accessibility', id: 'accessibility', selected: false },
+          ],
+        },
+        Loading: {},
+      },
+    }
+  }
+
+  // _handleUp() {
+  //   if (this.index === 0) {
+  //     this.index = this.dataLength - 1
+  //   } else {
+  //     this.index -= 1
+  //   }
+  // }
+
+  // _handleDown() {
+  //   if (this.index === this.dataLength - 1) {
+  //     this.index = 0
+  //   } else {
+  //     this.index += 1
+  //   }
+  // }
+  // _handleLeft() {
+  //   if (this.index === 0) {
+  //     this.index = this.dataLength - 1
+  //   } else {
+  //     this.index -= 1
+  //   }
+  //   this.repositionWrapper()
+  // }
+
+  // _handleRight() {
+  //   if (this.index === this.dataLength - 1) {
+  //     this.index = 0
+  //   } else {
+  //     this.index += 1
+  //   }
+  //   this.repositionWrapper()
+  // }
+
+  repositionWrapper() {
+    const wrapper = this.tag('Wrapper')
+    const sliderW = this.tag('Slider').w
+    const currentWrapperX = wrapper.transition('x').targetvalue || wrapper.x
+    const currentFocus = wrapper.children[this.index]
+    const currentFocusX = currentFocus.x + currentWrapperX
+    const currentFocusOuterWidth = currentFocus.x + currentFocus.w
+
+    if (currentFocusX < 0) {
+      wrapper.setSmooth('x', -currentFocus.x)
+    } else if (currentFocusOuterWidth > sliderW) {
+      wrapper.setSmooth('x', sliderW - currentFocusOuterWidth)
+    }
+  }
+  _active() {
+    //this.widgets.menu.show()
+  }
+
+  _setup() {
+    Router.startRouter(routes, this)
+  }
+
+  _initSlider() {
+    this.index = 0
+    this.dataLength = 6
+    const buttons = []
+    for (let i = 0; i < this.dataLength; i++) {
+      buttons.push({
+        type: Tile,
+        x: i * (300 + 30),
+        item: { label: `Train ${i + 1}`, src: Utils.asset(`/images/${i}.jpg`) },
+      })
+    }
+    this.tag('Wrapper').children = buttons
+  }
+
+  _initVericalList() {
+    this.index = 0
+    this.dataLength = 10
+    const sections = []
+    for (let i = 0; i < this.dataLength; i++) {
+      sections.push({
+        type: HList,
+        margin: 10,
+        item: { title: `Section ${i + 1}` },
+      })
+    }
+    this.tag('MyVerticalList').add(sections)
+  }
+
+  _initMenu() {
+    this.indexMenu = 0
+    this.dataMenuLength = 8
+    const buttons = []
+    for (let i = 0; i < this.dataLength; i++) {
+      buttons.push({ type: MenuItem, y: i * 50, w: 300, label: `Button ${i + 1}` })
+    }
+    this.tag('Menu').children = buttons
+  }
+
+  _init() {
+    //this._initMenu()
+    //this._initSlider()
+    //this._initVericalList()
+    /*
+    this.tag('Background')
+      .animation({
+        duration: 15,
+        repeat: -1,
+        actions: [
+          {
+            t: '',
+            p: 'color',
+            v: { 0: { v: 0xfffbb03b }, 0.5: { v: 0xfff46730 }, 0.8: { v: 0xfffbb03b } },
+          },
+        ],
+      })
+      .start()
+      */
+  }
+}

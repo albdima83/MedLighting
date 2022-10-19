@@ -1,0 +1,7 @@
+version: 2
+authtoken: 1ugNUAqykUidCTE2r12zbLzbqSZ_3ynEUhqiErMDMwyFkWffZ
+tunnels:
+  newctv:
+    proto: http
+    hostname: newctv.eu.ngrok.io
+    addr: 127.0.0.1:8080

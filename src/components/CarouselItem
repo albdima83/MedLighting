@@ -1,0 +1,148 @@
+import { Lightning, Utils, Colors, Router } from '@lightningjs/sdk'
+import ImageHelper from '../libs/helpers/imageHelper'
+import { ScrollingLabel } from '@lightningjs/ui'
+
+export default class CarouselItem extends Lightning.Component {
+  static _template() {
+    return {
+      Shadow: {
+        alpha: 0,
+        mount: 0.5,
+        x: w => w / 2,
+        y: h => h / 2,
+        w: w => w + 90,
+        h: h => h + 90,
+        color: Colors('shadow').get(),
+        rect: true,
+        shader: { type: Lightning.shaders.FadeOut, fade: 32 },
+      },
+      ImageWrapper: {
+        w: w => w,
+        h: h => h,
+        rtt: true,
+        shader: { type: Lightning.shaders.RoundedRectangle, radius: 4 },
+        Fill: { w: w => w, h: h => h, color: Colors('black').get(), rect: true },
+        Image: {
+          alpha: 0.2,
+          mount: 0.5,
+          y: w => w / 2,
+          x: h => h / 2,
+        },
+      },
+      Focus: {
+        alpha: 0,
+        x: 0,
+        y: 0,
+        w: w => w,
+        h: h => h,
+        rect: true,
+        shader: {
+          type: Lightning.shaders.RoundedRectangle,
+          radius: 3,
+          stroke: 4,
+          strokeColor: 0xffffffff,
+          blend: 1,
+          fillColor: 0x00ffffff,
+        },
+      },
+      /*
+      ScrollingLabel: {
+        type: ScrollingLabel,
+        mount: 0,
+        x: 0,
+        y: h => h - 5,
+        w: w => w,
+        h: 20,
+        align: 'center',
+        color: Colors('white').get(),
+        label: { text: { fontFace: 'Londrina', fontSize: 14 } },
+        autoStart: false,
+        delay: 3,
+      },
+      */
+      FocusRing: {
+        alpha: 0,
+      },
+    }
+  }
+
+  set item(it) {
+    this._item = it
+  }
+
+  _handleEnter() {
+    Router.navigate('video')
+  }
+
+  _updateItem() {
+    console.log(`CarouselITem size [${this.w} x ${this.h}]`)
+    const { title, images, template, showTitle } = this._item
+    const dimension = { width: this.w, height: this.h }
+    const imgUrl = ImageHelper.getImageURL(images, template, dimension)
+    console.log(`imgUrl : [${imgUrl}] [${this.w} x ${this.h}]`)
+    this.patch({
+      ImageWrapper: {
+        Image: {
+          alpha: 0.6,
+          texture: {
+            type: Lightning.textures.ImageTexture,
+            src: imgUrl,
+            resizeMode: { type: 'cover', w: this.w, h: this.h },
+          },
+          //h: this.h * 0.7,
+          //w: this.h * 0.7,
+        },
+      },
+      //ScrollingLabel: { label: title.toString() },
+    })
+  }
+
+  _init() {
+    const image = this.tag('Image')
+    image.on('txLoaded', () => {
+      console.log('image txLoaded')
+      image.setSmooth('alpha', 1)
+    })
+    image.on('txError', () => {
+      console.log('error')
+    })
+    this._focusAnimation = this.animation({
+      duration: 0.2,
+      actions: [
+        { p: 'scale', v: { 0: 1, 1: 1.075 } },
+        { t: 'Shadow', p: 'alpha', v: { 0: 0, 1: 1 } },
+        //{ t: 'Label', p: 'scale', v: { 0: 1, 1: 1.1 } },
+        {
+          t: 'Label',
+          p: 'color',
+          v: {
+            0: Colors('white')
+              .alpha(0.4)
+              .get(),
+            1: Colors('white').get(),
+          },
+        },
+        { t: 'Focus', p: 'alpha', v: { 0: 0, 1: 1 } },
+      ],
+    })
+  }
+
+  _firstEnable() {}
+
+  _firstActive() {
+    this._updateItem()
+  }
+
+  _focus() {
+    if (this._focusAnimation) {
+      this._focusAnimation.start()
+      this.application.emit('setItem', this._item)
+      //this.tag('ScrollingLabel').start()
+    }
+  }
+
+  _unfocus() {
+    this._focusAnimation.stop()
+    //this.tag('ScrollingLabel').stop()
+  }
+}
