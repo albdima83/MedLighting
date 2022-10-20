@@ -24,6 +24,7 @@ const platformSettings = {
   backtracking: true,
   reuseInstance: false,
   destroyOnHistoryBack: true,
+  //proxyUrl: 'https://proxyURL.com',
 }
 /*
 options.keys = {

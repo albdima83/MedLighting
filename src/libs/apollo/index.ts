@@ -1,21 +1,25 @@
 import { ApolloClient, ApolloLink, concat, HttpLink, InMemoryCache, NextLink, NormalizedCacheObject, Operation } from "@apollo/client/core";
+import { setContext } from "@apollo/client/link/context";
 import appconfig from "../configurations/appconfig";
 import AsyncStorage from "../storage";
 import result from './introspections/introspection-result';
 
 console.log(`appconfig.apolloBaseURL: [${appconfig.apolloBaseURL}]`);
 
-const getUserJWT = async () => { 
+const getUserJWT = async (): Promise<any> => { 
   const token = await AsyncStorage.getItem('it.mediaset.authorization')
   return token ? `${token}` : null
 }
 
-const getUserSid = async () => { 
+const getUserSid = async (): Promise<any> => { 
   const sid = await AsyncStorage.getItem('it.mediaset.sid')
   return sid ?? ""
 }
 
-const httpLink = new HttpLink({ uri: "https://mediasetplay-preprod.api-graph.mediaset.it" });
+const httpLink = new HttpLink({ 
+	uri: "https://mediasetplay-preprod.api-graph.mediaset.it",
+	useGETForQueries: true
+});
 const apolloMemory = new InMemoryCache({
   addTypename: true,
   possibleTypes: result.possibleTypes,
@@ -118,64 +122,31 @@ const apolloMemory = new InMemoryCache({
 	},
 });
 
-const authMiddlewareOLD = new ApolloLink((operation: Operation, forward: NextLink) => {
-  operation.setContext(({ headers = {} }) => ({
-    headers: {
-      ...headers,
-      "authorization": "eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiJtZWRpYXNldC10ZXN0L21lZGlhc2V0LXRlc3QvYW5vbnltb3VzIiwiaXNzIjoiMSIsImV4cCI6MTY2NDEwMzk0NCwiaWF0IjoxNjYzNTg1NTQ0NTc1LCJqdGkiOiIwYjlhNGFkNS1hMGQ3LTQ4YjMtYTQwYS00MGIyOGM2ZjlmYjUiLCJkaWQiOiJtZWRpYXNldC10ZXN0IiwidW5tIjoiYW5vbnltb3VzIiwiY3R4Ijoie1widXNlck5hbWVcIiA6IFwibWVkaWFzZXQtdGVzdC9hbm9ueW1vdXNcIiwgXCJmYWxsYmFja1wiOiBcInRydWVcIixcInR5cGVcIjpcInVucmVnaXN0ZXJlZFwiLFwiYXR0cmlidXRlc1wiOnsgXCJhcHBOYW1lXCI6IFwiZ2VuZXJpYy10dnNpbXVsYXRvclwiLCBcImhhc2hcIjogXCJpYlVkeU9kcytrU0ZVWTUwMk4zSTNTTkJ1NVdXMnpzRDZrVU1DQnVuSE9ZPVwifX1cbiIsIm9pZCI6IjI3MDI1OTkwMzcifQ.N7GeiaUmAnloNsZRbxRep2l9iNCZ0uQVR_cspKb8pllLK2oeddOUChN_wVXQ0QkVKccAU7NGfIcqPuCQCv-pjOP6XAZwdVv76tarkSbtp4sq1xRirFzhu5S3P-g2pvMd-Yzg59gXhYHbMdSCUzmy6IANeMvFVz_LL6W2YSYIrMC7g8ey__0mwqlNSigBWbCDqNWYNoRx7LEvYgVHIyPab5-Dd8876IwocNz7jYuB993Lnz4Fo3B1WQkju59qSYwf4B2tBnp6JuXpqck58D14rFm-VhF0WO6kZ6j8D4eSk07L7Ew8wSe_IaJ7Ne2kJEOgX-m4hqjX9gqSvw1jj_mkkA",
-      "x-m-app-version": "0.37.5",
-      "x-m-device-id": "d6e56477-7622-4de6-96a6-549048492597",
-      "x-m-os-version":"",
-      "x-m-platform": "GENERIC_TVSIMULATOR",
-      "x-m-property": "MPLAY",
-      "x-m-sid": "f580938d-9eca-47b1-b9f8-f92796f890dc",
-      "x-m-user-context": "ixCAeyJwbGF0Zm9ybSI6ImdlbmVyaWMtdHZzaW11bGF0b3IifQM="
-    }
-  }));
-  return forward(operation);
+const authMiddleware = setContext(async (_, { headers }) => {
+	const token = await getUserJWT();
+	const sid = await getUserSid();
+	console.log(`token: [${token}]`);
+	console.log(`sid: [${sid}]`);
+  
+	return {
+	  headers: {
+		...headers,
+		"authorization": `${token}`,
+		"x-m-app-version": "0.37.5",
+		"x-m-device-id": "d6e56477-7622-4de6-96a6-549048492597",
+		"x-m-os-version":"",
+		"x-m-platform": "GENERIC_TVSIMULATOR",
+		"x-m-property": "MPLAY",
+		"x-m-sid": `${sid}`,
+		"x-m-user-context": "ixCAeyJwbGF0Zm9ybSI6ImdlbmVyaWMtdHZzaW11bGF0b3IifQM="
+	  }
+	};
 });
 
-const authMiddleware = new ApolloLink((operation: Operation, forward: NextLink) => {
-    operation.setContext(async({ headers = {} }) => {
-       const token = await getUserJWT();
-       const sid = await getUserSid();
-       console.log(`token: [${token}]`);
-       console.log(`token: [${token}]`);
-       console.log(`sid: [${sid}]`);
-       const newHeaders = {
-        headers:{
-          ...headers,
-          "Authorization": token,
-          "x-m-app-version": "0.37.5",
-          "x-m-device-id": "d6e56477-7622-4de6-96a6-549048492597",
-          "x-m-os-version":"",
-          "x-m-platform": "GENERIC_TVSIMULATOR",
-          "x-m-property": "MPLAY",
-          "x-m-sid": sid,
-          "x-m-user-context": "ixCAeyJwbGF0Zm9ybSI6ImdlbmVyaWMtdHZzaW11bGF0b3IifQM="
-        }
-      }
-       console.log(newHeaders);
-       return newHeaders;
-    });
-  return forward(operation);
-})
-
-/*
 const link = ApolloLink.from([
-	// Tizen 2015 / 2016 don't have window.crypto.subtle used for sha256
-	authMiddleware.concat(
-		apolloConfigs.usePersistedQueries && window.crypto.subtle 
-			? // TODO: we may use @aws-crypto/sha256-browser, we haven't tried because are low traffic platforms and to avoid to introduce issues
-			  createPersistedQueryLink({
-					sha256,
-					useGETForHashedQueries: true,
-			  }).concat(httpLink)
-			: httpLink
-	),
-]);
-*/
-
-const client = new ApolloClient<NormalizedCacheObject>({cache: apolloMemory,link: concat(authMiddlewareOLD, httpLink)});
+	authMiddleware,
+	httpLink
+])
+const client = new ApolloClient<NormalizedCacheObject>({cache: apolloMemory,link: link});
 
 export default client

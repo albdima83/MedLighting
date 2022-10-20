@@ -1,6 +1,5 @@
 import { Lightning, Utils, Router } from '@lightningjs/sdk'
 import Page from '../utils/page'
-import Apollo from '../libs/apollo'
 import AppConfig from '../libs/configurations/appconfig'
 import { RemoteConfigMockup } from '../libs/mockup'
 import APIService from '../libs/services/apiservice'
@@ -49,6 +48,7 @@ export default class Splash extends Page {
 
   async _loadApplication() {
     AppConfig.remoteConfig = RemoteConfigMockup
+    console.log('_loadApplication')
     console.log(`AppConfig.navMain: [${AppConfig.navMain}]`)
     console.log(`AppConfig.homepage: [${AppConfig.homepage}]`)
     const data = await APIService.anonymousLogin()

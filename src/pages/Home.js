@@ -56,9 +56,9 @@ export default class Home extends GenericPage {
     this._loadPage(AppConfig.homepage)
   }
 
-  _build() {
-    this._loadData()
-  }
+  _active() {}
+
+  _build() {}
 
   _init() {}
 

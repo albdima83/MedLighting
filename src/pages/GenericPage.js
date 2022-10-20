@@ -29,6 +29,19 @@ export default class GenericPage extends Page {
       ...super._template(),
       ContentPreview: {
         type: PreviewBackground,
+        w: this.w,
+        h: this.h * 0.5,
+      },
+      OverlayGradient: {
+        w: 60,
+        h: h => h,
+        rect: true,
+        colorLeft: 0xff000000,
+        colorRight: 0x00000000,
+        MenuList: {
+          type: List,
+          direction: 'column',
+        },
       },
       PageList: {
         type: List,
@@ -56,6 +69,7 @@ export default class GenericPage extends Page {
       w: this.w,
       h: this.h * 0.5,
     })
+    this._loadData()
   }
 
   _focus() {
@@ -146,6 +160,12 @@ export default class GenericPage extends Page {
       console.log(itemWrapper)
       console.log('PageList indexData')
       console.log(indexData)
+      console.log('PageList scroll data')
+      console.log(`assignedX: [${itemWrapper.assignedX}]`)
+      console.log(`assignedY: [${itemWrapper.assignedY}]`)
+      console.log(`_w: [${itemWrapper._w}]`)
+      console.log(`_h: [${itemWrapper._h}]`)
+
       //scrollNext
       if (direction > 0) {
         const nextItemWrapper = this.tag('PageList').itemWrappers[index - 1]
@@ -156,8 +176,11 @@ export default class GenericPage extends Page {
         previousItemWrapper.setSmooth('alpha', 1)
       }
       //itemWrapper.setSmooth('alpha', 0)
-      const scroll = index == 0 ? 0 : -300 //(-1 * ((index + 1) * this.h)) / 2
-      console.log(`PageList scroll [${scroll}]`)
+      let scroll = 0
+      if (index > 0) {
+        scroll = this.h / 2 - itemWrapper.assignedY - 30
+        console.log(`PageList scroll [${scroll}]`)
+      }
       return scroll
     }
 

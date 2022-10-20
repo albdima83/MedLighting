@@ -39,7 +39,7 @@ export default class CarouselItem extends Lightning.Component {
         shader: {
           type: Lightning.shaders.RoundedRectangle,
           radius: 3,
-          stroke: 4,
+          stroke: 6,
           strokeColor: 0xffffffff,
           blend: 1,
           fillColor: 0x00ffffff,
@@ -76,10 +76,16 @@ export default class CarouselItem extends Lightning.Component {
 
   _updateItem() {
     console.log(`CarouselITem size [${this.w} x ${this.h}]`)
-    const { title, images, template, showTitle } = this._item
+    const { title, images, template, showTitle, fallbackTemplate } = this._item
     const dimension = { width: this.w, height: this.h }
-    const imgUrl = ImageHelper.getImageURL(images, template, dimension)
-    console.log(`imgUrl : [${imgUrl}] [${this.w} x ${this.h}]`)
+    console.log(`template :[${template}]`);
+    console.log(`fallbackTemplate :[${fallbackTemplate}]`);
+    let imgUrl = ImageHelper.getImageURL(images, template, dimension)
+    console.log(`imgUrl : [${imgUrl}] [${template}] [${this.w} x ${this.h}]`)
+    if (!!!imgUrl && !!fallbackTemplate) {
+      imgUrl = ImageHelper.getImageURL(images, fallbackTemplate, dimension, '@2')
+      console.log(`imgUrl : [${imgUrl}] [${fallbackTemplate}] [${this.w} x ${this.h}]`)
+    }
     this.patch({
       ImageWrapper: {
         Image: {
@@ -133,10 +139,17 @@ export default class CarouselItem extends Lightning.Component {
     this._updateItem()
   }
 
+  _active(){
+    
+  }
+
   _focus() {
     if (this._focusAnimation) {
       this._focusAnimation.start()
-      this.application.emit('setItem', this._item)
+      const hasContentPreview = this._item.hasContentPreview || false
+      if (hasContentPreview) {
+        this.application.emit('setItem', this._item)
+      }
       //this.tag('ScrollingLabel').start()
     }
   }

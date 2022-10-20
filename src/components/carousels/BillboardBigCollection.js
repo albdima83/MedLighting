@@ -20,6 +20,13 @@ export class BillboardBigCollection extends Lightning.Component {
           h: h => h,
         },
       },
+      OverlayGradientW: {
+        w: w => 0.8 * w,
+        h: h => h,
+        rect: true,
+        colorLeft: 0xff000000,
+        colorRight: 0x00000000,
+      },
       OverlayGradient: {
         x: 0,
         y: h => h * 0.3,
@@ -30,6 +37,7 @@ export class BillboardBigCollection extends Lightning.Component {
         colorTop: 0x00000000,
       },
       HList: {
+        x: 32,
         w: w => w,
         y: h => h - 260,
         mountY: 1,
@@ -65,14 +73,10 @@ export class BillboardBigCollection extends Lightning.Component {
     console.log('HList onIndexChanged')
     console.log(`index:[${index}] previousIndex:[${previousIndex}] dataLength:[${dataLength}]`)
     this._changeBackground(index)
-    /*
-    if (index > 0 && index % 5 == 0) {
-      this.tag('HList').setIndex(0)
-    }
-    */
   }
 
   _changeBackground(index) {
+    if (!this._loaded) return
     const its = this._item.items || []
     if (!!!its || its.length == 0 || index < 0 || index > its.length) return
     this._currentIndex = index
@@ -81,6 +85,7 @@ export class BillboardBigCollection extends Lightning.Component {
   }
 
   _firstActive() {
+    this._loaded = true
     this._changeBackground(this._currentIndex)
   }
 
@@ -95,10 +100,12 @@ export class BillboardBigCollection extends Lightning.Component {
       ? getCarouselHeight(this.h, this._item.layout.itemLayout.height || 0)
       : 0
     const itTemplate = this._item.template.itemsTemplateImage || null
-    const itFTemplate = this._item.template.fallBackItemsTemplateImage || null
+    const itFTemplate = this._item.template.itemsFallbackTemplateImage || null
     const showTitle = this._item.layout.itemLayout.showTitle || false
     console.log(`itWidth: [${itWidth}]`)
     console.log(`itHeight: [${itHeight}]`)
+    console.log(`itTemplate: [${itTemplate}]`)
+    console.log(`itFTemplate: [${itFTemplate}]`)
     console.log(its)
     its.forEach(item => {
       items.push({
@@ -109,6 +116,7 @@ export class BillboardBigCollection extends Lightning.Component {
           template: itTemplate,
           fallbackTemplate: itFTemplate,
           showTitle,
+          hasContentPreview: false,
         },
         margin: 16,
         w: itWidth,
@@ -117,8 +125,8 @@ export class BillboardBigCollection extends Lightning.Component {
     })
     this.tag('HList').add(items)
     this.tag('HList').scroll = {
-      after: 3, //start scrolling after 3 items
-      jump: 3, //after three items jump three Items
+      after: 1, //start scrolling after 3 items
+      jump: 1, //after three items jump three Items
       forward: 0.9, //unless last item: scroll forward if item bounds are after 90% of the List, or if value is above 1; scroll after f.e. 900 pixels
       backward: 0.1, //unless first item: scroll backward if item bounds are before 10% of the List, or if value is above 1; scroll before f.e. 50 pixels
     }
@@ -131,16 +139,22 @@ export class BillboardBigCollection extends Lightning.Component {
     }
     const dimension = { width: this.w, height: this.h }
     console.log(dimension)
-    const imgUrl = ImageHelper.getImageURL(item.images, 'editorial_image_hero', dimension)
+    let imgUrl = ImageHelper.getImageURL(item.images, 'image_header_poster', dimension, '@2')
+    if (!!!imgUrl) {
+      imgUrl = ImageHelper.getImageURL(item.images, 'editorial_image_hero', dimension, '@2')
+    }
     console.log('@@@ imgURL')
     console.log(imgUrl)
     this._src = imgUrl
+
     if (!!!imgUrl || this._src === this._lastSrc) return
     console.log('@@@ PreviewBackground _setBackground')
     console.log(`@@@ this._backgroundIndex: [${this._backgroundIndex}]`)
     this._lastSrc = this._src
     console.log(this._src)
     this.tag('Backgrounds').children[this._backgroundIndex].patch({
+      w: this.w,
+      h: this.h,
       texture: {
         type: Lightning.textures.ImageTexture,
         src: this._src,
@@ -153,6 +167,7 @@ export class BillboardBigCollection extends Lightning.Component {
   }
 
   _construct() {
+    this._loaded = false
     this._backgroundIndex = 0
     this._currentIndex = 0
   }

@@ -7,6 +7,7 @@ export class HorizontalList extends Lightning.Component {
   static _template() {
     return {
       HList: {
+        x: 32,
         w: w => w,
         h: h => h + 32,
         type: List,
@@ -70,6 +71,7 @@ export class HorizontalList extends Lightning.Component {
           template: itTemplate,
           fallbackTemplate: itFTemplate,
           showTitle,
+          hasContentPreview: true,
         },
         margin: 16,
         w: itWidth,

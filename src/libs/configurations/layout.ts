@@ -11,7 +11,7 @@ import {
 export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   [LocalCarouselTemplate.BillboardBigCollection]: {
     width: 0,
-    height: -240,
+    height: -180,
     itemLayout: {
       x: 20,
       y: 0,
@@ -22,7 +22,7 @@ export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   },
   [LocalCarouselTemplate.BillboardCollection]:{
     width: 0,
-    height: -120,
+    height: -180,
     itemLayout: {
       x: 40,
       y: 0,

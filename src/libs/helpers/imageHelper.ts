@@ -57,7 +57,11 @@ class ImageHelper {
     path = path.replace('{width}', `${Math.ceil(dimension.width)}`);
     path = path.replace('{height}', `${Math.ceil(dimension.height)}`);
     if(!!suffix && suffix !== ''){
-      path = path + suffix;
+      if(path.indexOf('?')){
+        path = path.replace('?',`${suffix}?`)
+      }else{
+        path = path + suffix;
+      }
     }
     return path;
   };

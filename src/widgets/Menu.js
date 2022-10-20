@@ -5,7 +5,17 @@ import { List } from '@lightningjs/ui'
 export default class Menu extends Lightning.Component {
   static _template() {
     return {
-      Fill: { x: 0, y: 0, w: w => w, h: h => h, color: Colors('#222').get(), rect: true },
+      OverlayGradient: {
+        w: 60,
+        h: h => h,
+        rect: true,
+        colorLeft: 0xff000000,
+        colorRight: 0x00000000,
+        MenuList: {
+          type: List,
+          direction: 'column',
+        },
+      },
       MenuList: {
         type: List,
         direction: 'column',

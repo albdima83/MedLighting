@@ -11,12 +11,12 @@ class AsyncStorage{
     }
     
 
-    getItem = (key:string):any => {
+    getItem = async(key:string):Promise<any> => {
         const value = localStorage.getItem(key);
         return value
     }
 
-    setItem = (key:string,value:string) => {
+    setItem = async(key:string,value:string): Promise<void> => {
         localStorage.setItem(key,value);
     }
 
