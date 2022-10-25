@@ -1,7 +1,6 @@
 import { NotFound, Splash, Home, VideoPage } from '../pages'
 
 export default {
-  bootComponent: Splash,
   root: () => {
     return new Promise(resolve => {
       resolve('splash')
@@ -9,7 +8,7 @@ export default {
   },
   routes: [
     {
-      path: 'splash',
+      path: '$',
       component: Splash,
     },
     {

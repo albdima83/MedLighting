@@ -9,11 +9,11 @@ import { LinkType, LinkTarget, ReferenceType } from "./globalTypes";
 // GraphQL fragment: DetailItemFragment
 // ====================================================
 
-export interface DetailItemFragment_ArticleItem_cardImages_Image {
+export interface DetailItemFragment_StationItem_cardImages_Image {
   __typename: "Image";
 }
 
-export interface DetailItemFragment_ArticleItem_cardImages_ImagePlaceholder {
+export interface DetailItemFragment_StationItem_cardImages_ImagePlaceholder {
   __typename: "ImagePlaceholder";
   agency: string | null;
   id: string;
@@ -26,14 +26,14 @@ export interface DetailItemFragment_ArticleItem_cardImages_ImagePlaceholder {
   imagePreview: string | null;
 }
 
-export type DetailItemFragment_ArticleItem_cardImages = DetailItemFragment_ArticleItem_cardImages_Image | DetailItemFragment_ArticleItem_cardImages_ImagePlaceholder;
+export type DetailItemFragment_StationItem_cardImages = DetailItemFragment_StationItem_cardImages_Image | DetailItemFragment_StationItem_cardImages_ImagePlaceholder;
 
-export interface DetailItemFragment_ArticleItem_cardAttributes {
+export interface DetailItemFragment_StationItem_cardAttributes {
   __typename: "CardAttributes";
   textColor: any | null;
 }
 
-export interface DetailItemFragment_ArticleItem_cardCtas {
+export interface DetailItemFragment_StationItem_cardCtas {
   __typename: "VisualLink";
   /**
    * url|reference
@@ -50,7 +50,7 @@ export interface DetailItemFragment_ArticleItem_cardCtas {
   behavior: string | null;
 }
 
-export interface DetailItemFragment_ArticleItem_cardLink {
+export interface DetailItemFragment_StationItem_cardLink {
   __typename: "Link";
   /**
    * url|reference
@@ -63,14 +63,14 @@ export interface DetailItemFragment_ArticleItem_cardLink {
   behavior: string | null;
 }
 
-export interface DetailItemFragment_ArticleItem {
-  __typename: "ArticleItem" | "BreakingItem" | "GalleryItem" | "GenericItem" | "LandingItem" | "OptionItem" | "PickerItem" | "PlaceholderItem" | "PodcastItem" | "QrCodeItem" | "RecipeItem" | "SeasonItem" | "StaticItem" | "StationItem";
+export interface DetailItemFragment_StationItem {
+  __typename: "StationItem" | "PlaceholderItem" | "SeasonItem" | "ArticleItem" | "BreakingItem" | "GalleryItem" | "GenericItem" | "LandingItem" | "OptionItem" | "PickerItem" | "PodcastItem" | "QrCodeItem" | "RecipeItem" | "StaticItem";
   cardTitle: string | null;
   cardText: string | null;
-  cardImages: DetailItemFragment_ArticleItem_cardImages[] | null;
-  cardAttributes: DetailItemFragment_ArticleItem_cardAttributes | null;
-  cardCtas: DetailItemFragment_ArticleItem_cardCtas[] | null;
-  cardLink: DetailItemFragment_ArticleItem_cardLink | null;
+  cardImages: DetailItemFragment_StationItem_cardImages[] | null;
+  cardAttributes: DetailItemFragment_StationItem_cardAttributes | null;
+  cardCtas: DetailItemFragment_StationItem_cardCtas[] | null;
+  cardLink: DetailItemFragment_StationItem_cardLink | null;
 }
 
 export interface DetailItemFragment_SeriesItem_cardImages_Image {
@@ -393,4 +393,4 @@ export interface DetailItemFragment_VideoItem {
   subLanguages: string[] | null;
 }
 
-export type DetailItemFragment = DetailItemFragment_ArticleItem | DetailItemFragment_SeriesItem | DetailItemFragment_VideoItem;
+export type DetailItemFragment = DetailItemFragment_StationItem | DetailItemFragment_SeriesItem | DetailItemFragment_VideoItem;

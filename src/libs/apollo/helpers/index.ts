@@ -1,7 +1,6 @@
 import { ContentPreviewData } from "../models";
 import { ItemFragment, ItemFragment_SeasonItem, ItemFragment_StationItem, ItemFragment_VideoItem } from "../generated/ItemFragment";
 import result from "../introspections/introspection-result"
-import { ItemFragment } from "../queries/fragments";
 
 
 
@@ -30,6 +29,10 @@ export const isVideoItem = (item:ItemFragment) => isTypenameItem(item, "VideoIte
 
 
 const _previewDataVideoOrSeasonMapper = (item: ItemFragment_VideoItem | ItemFragment_SeasonItem) : ContentPreviewData | null => {
+
+	const cardLogo = item.cardImages
+	const cardBackground = item.cardImages
+	
     /*
     const cardLogo = findPlaceholderImage(item.cardImages, 'logo_horizontal');
 	const cardBackgroundImage = findPlaceholderImage(item.cardImages, 'image_header_poster');
@@ -63,12 +66,24 @@ const _previewDataVideoOrSeasonMapper = (item: ItemFragment_VideoItem | ItemFrag
 }
 
 const _previewDataOnAirMapper = (item: ItemFragment_StationItem): ContentPreviewData | null => {
+	
 	const prog = item?.listings?.[0];
-    const subtitle = prog?.title ?? null;
+	//const logoImgs = []; //item.cardImages
+	//const backgroundImgs = []; //prog.images
+	const templateLogo = 'editorial_image_channel_logo';
+	const fallabckTemplateLogo = null;
+	const templateBackground = 'image_header_poster';
+	const subtitle = prog?.title ?? null;
     const showOnAirLabel  = prog?.liveAllowed ? 'ora in onda' : null;
     const logoFallbackTitle =  prog?.title ?? null;
+	
     return {
-        showOnAirLabel,
+		//logoImgs,
+		templateLogo,
+		fallabckTemplateLogo,
+		//backgroundImgs,
+		templateBackground,
+	    showOnAirLabel,
         subtitle,
         logoFallbackTitle
     }
@@ -95,11 +110,14 @@ const _previewDataOnAirMapper = (item: ItemFragment_StationItem): ContentPreview
 };
 
 
+type TypenameKey = keyof ItemFragment["__typename"];
+
 type ContentPreviewDicHelper = {
-    [key: string ]: ((item: ItemFragment) => ContentPreviewData | null) | null
+    [key: string]: ((item: any) => ContentPreviewData | null) | null
 }
 
-export const contentPreviewFromType = {
+
+export const contentPreviewFromType:ContentPreviewDicHelper = {
     "ArticleItem": null,
     "BreakingItem": null,
     "GalleryItem" : null,
@@ -119,10 +137,12 @@ export const contentPreviewFromType = {
 }
 
 
-
 export const getContentPreviewFromItem = (item: ItemFragment): ContentPreviewData | null => {
     const type = item.__typename
     const contentPreview = contentPreviewFromType[type]
-    return contentPreview && contentPreview(item)
+	if(!!contentPreview){
+		return contentPreview(item)
+	}
+    return null
 }
 

@@ -63,6 +63,7 @@ class ImageHelper {
         path = path + suffix;
       }
     }
+    path = `https://medproxy.imoobyte.com/imgs/${btoa(encodeURIComponent(path))}`
     return path;
   };
 

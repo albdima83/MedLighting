@@ -1,29 +1,32 @@
 import { Lightning, Utils, Colors, Router } from '@lightningjs/sdk'
 import ImageHelper from '../libs/helpers/imageHelper'
 import { ScrollingLabel } from '@lightningjs/ui'
+import BlurShader from '../shaders/index'
 
 export default class CarouselItem extends Lightning.Component {
   static _template() {
     return {
+      /*
       Shadow: {
         alpha: 0,
         mount: 0.5,
-        x: w => w / 2,
-        y: h => h / 2,
-        w: w => w + 90,
-        h: h => h + 90,
-        color: Colors('shadow').get(),
+        //type: Lightning.components.FastBlurComponent,
+        x: w => (w) / 2,
+        y: h => (h) / 2,
+        w: w => w + 34,
+        h: h => h + 34,
+        color: Colors("white").get(),
+        radius: 16,
         rect: true,
-        shader: { type: Lightning.shaders.FadeOut, fade: 32 },
-      },
+        shader: {type: Lightning.shaders.FadeOut, fade: 36},
+      },*/
       ImageWrapper: {
         w: w => w,
         h: h => h,
-        rtt: true,
-        shader: { type: Lightning.shaders.RoundedRectangle, radius: 4 },
+        //shader: { type: Lightning.shaders.RoundedRectangle, radius: 16 },
         Fill: { w: w => w, h: h => h, color: Colors('black').get(), rect: true },
+        rect: true,
         Image: {
-          alpha: 0.2,
           mount: 0.5,
           y: w => w / 2,
           x: h => h / 2,
@@ -31,6 +34,7 @@ export default class CarouselItem extends Lightning.Component {
       },
       Focus: {
         alpha: 0,
+        zIndex:2,
         x: 0,
         y: 0,
         w: w => w,
@@ -38,7 +42,7 @@ export default class CarouselItem extends Lightning.Component {
         rect: true,
         shader: {
           type: Lightning.shaders.RoundedRectangle,
-          radius: 3,
+          //radius: 16,
           stroke: 6,
           strokeColor: 0xffffffff,
           blend: 1,
@@ -52,7 +56,7 @@ export default class CarouselItem extends Lightning.Component {
         x: 0,
         y: h => h - 5,
         w: w => w,
-        h: 20,
+        h: 16,
         align: 'center',
         color: Colors('white').get(),
         label: { text: { fontFace: 'Londrina', fontSize: 14 } },
@@ -60,9 +64,6 @@ export default class CarouselItem extends Lightning.Component {
         delay: 3,
       },
       */
-      FocusRing: {
-        alpha: 0,
-      },
     }
   }
 
@@ -80,19 +81,18 @@ export default class CarouselItem extends Lightning.Component {
     const dimension = { width: this.w, height: this.h }
     console.log(`template :[${template}]`);
     console.log(`fallbackTemplate :[${fallbackTemplate}]`);
-    let imgUrl = ImageHelper.getImageURL(images, template, dimension)
-    console.log(`imgUrl : [${imgUrl}] [${template}] [${this.w} x ${this.h}]`)
-    if (!!!imgUrl && !!fallbackTemplate) {
-      imgUrl = ImageHelper.getImageURL(images, fallbackTemplate, dimension, '@2')
-      console.log(`imgUrl : [${imgUrl}] [${fallbackTemplate}] [${this.w} x ${this.h}]`)
+    this._imgUrl = ImageHelper.getImageURL(images, template, dimension)
+    console.log(`imgUrl : [${this._imgUrl}] [${template}] [${this.w} x ${this.h}]`)
+    if (!!!this._imgUrl && !!fallbackTemplate) {
+      this._imgUrl = ImageHelper.getImageURL(images, fallbackTemplate, dimension, '@2')
+      console.log(`imgUrl : [${this._imgUrl}] [${fallbackTemplate}] [${this.w} x ${this.h}]`)
     }
     this.patch({
       ImageWrapper: {
         Image: {
-          alpha: 0.6,
           texture: {
             type: Lightning.textures.ImageTexture,
-            src: imgUrl,
+            src: this._imgUrl,
             resizeMode: { type: 'cover', w: this.w, h: this.h },
           },
           //h: this.h * 0.7,
@@ -108,16 +108,25 @@ export default class CarouselItem extends Lightning.Component {
     image.on('txLoaded', () => {
       console.log('image txLoaded')
       image.setSmooth('alpha', 1)
+      /*
+      const displayedTexture = image.displayedTexture
+      if(!!displayedTexture){
+        this.tag("Shadow").patch({
+            texture: displayedTexture,
+            alpha: 0
+        })
+      }*/
     })
     image.on('txError', () => {
       console.log('error')
     })
     this._focusAnimation = this.animation({
-      duration: 0.2,
+      duration: 0.4,
       actions: [
         { p: 'scale', v: { 0: 1, 1: 1.075 } },
-        { t: 'Shadow', p: 'alpha', v: { 0: 0, 1: 1 } },
+        //{ t: 'Shadow', p: 'alpha', v: { 0: 0, 1: 1 } },
         //{ t: 'Label', p: 'scale', v: { 0: 1, 1: 1.1 } },
+        /*
         {
           t: 'Label',
           p: 'color',
@@ -127,7 +136,7 @@ export default class CarouselItem extends Lightning.Component {
               .get(),
             1: Colors('white').get(),
           },
-        },
+        },*/
         { t: 'Focus', p: 'alpha', v: { 0: 0, 1: 1 } },
       ],
     })
@@ -144,13 +153,14 @@ export default class CarouselItem extends Lightning.Component {
   }
 
   _focus() {
+    
     if (this._focusAnimation) {
       this._focusAnimation.start()
-      const hasContentPreview = this._item.hasContentPreview || false
-      if (hasContentPreview) {
-        this.application.emit('setItem', this._item)
-      }
       //this.tag('ScrollingLabel').start()
+    }
+    const hasContentPreview = this._item.hasContentPreview || false
+    if (hasContentPreview || true) {
+      this.application.emit('setItem', this._item)
     }
   }
 

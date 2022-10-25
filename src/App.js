@@ -16,9 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Lightning, Utils, Colors, Router } from '@lightningjs/sdk'
-import { Carousel, List } from '@lightningjs/ui'
-import Background from './components/Background'
+import { Utils, Router } from '@lightningjs/sdk'
 import Menu from './widgets/Menu'
 import routes from './routes/routes'
 import { ScreenHeight, ScreenWidth } from './utils/screen'
@@ -65,24 +63,5 @@ export default class App extends Router.App {
     Router.startRouter(routes, this)
   }
 
-  _init() {
-    //this._initMenu()
-    //this._initSlider()
-    //this._initVericalList()
-    /*
-    this.tag('Background')
-      .animation({
-        duration: 15,
-        repeat: -1,
-        actions: [
-          {
-            t: '',
-            p: 'color',
-            v: { 0: { v: 0xfffbb03b }, 0.5: { v: 0xfff46730 }, 0.8: { v: 0xfffbb03b } },
-          },
-        ],
-      })
-      .start()
-      */
-  }
+  _init() {}
 }

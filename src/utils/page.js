@@ -7,7 +7,7 @@ export default class Page extends Lightning.Component {
       h: ScreenHeight(),
       w: ScreenWidth(),
       rect: true,
-      Fill: { w: w => w, h: h => h, color: Colors('#222').get(), rect: true },
+      color: 0x00000000,
     }
   }
 }

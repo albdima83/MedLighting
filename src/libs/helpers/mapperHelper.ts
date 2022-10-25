@@ -26,6 +26,9 @@ import {
   MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections,
   MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items,
 } from '../apollo/generated/MPlayPage';
+import { CollectionFlag } from '../apollo/generated/globalTypes';
+import { getContentPreviewFromItem } from '../apollo/helpers';
+import { ContentPreviewData } from '../apollo/models';
 
 class MapperHelper {
   static isEmpty = (arr: any) => {
@@ -72,6 +75,7 @@ class MapperHelper {
   ): CarouselItem | null | undefined => {
     if  (!template || !template.template) {return null;}
     const _template = template.template;
+    const contentPreviewData: ContentPreviewData | null = getContentPreviewFromItem(itemFragment)
     console.log(`@@@ getCarouselItemsFromFragment: [${_template}]`);
     let titleItem = itemFragment.cardTitle ?? '';;
     let eyelet = itemFragment.cardEyelet ?? '';;
@@ -149,6 +153,7 @@ class MapperHelper {
       subtitle: subtitleItem,
       type,
       images: imagesItem,
+      contentPreviewData
     };
   };;
 
@@ -217,10 +222,8 @@ class MapperHelper {
         console.log('==========================================');
         let link: ItemLink | null = null;
         if (!!localTemplate) {
-          /*if(collection as MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection){
-                        console.log("@@ MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection");
 
-                    }else*/
+          const hasContentPreview = (collection?.attributes?.flags ?? []).includes(CollectionFlag.SHOW_CONTENT_PREVIEW)
           switch(collection?.__typename){
               case 'PlaceholderCollection':
                 break
@@ -269,6 +272,7 @@ class MapperHelper {
                     images: images,
                     extras: null,
                     pageInfo: null,
+                    hasContentPreview
                   };
                   carouselList.push(carousel);
                 }

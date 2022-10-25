@@ -684,6 +684,25 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   title: string | null;
 }
 
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -693,6 +712,7 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem {
@@ -1395,6 +1415,25 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   title: string | null;
 }
 
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -1404,6 +1443,7 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem {
@@ -2106,6 +2146,25 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   title: string | null;
 }
 
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -2115,6 +2174,7 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem {
@@ -2817,6 +2877,25 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   title: string | null;
 }
 
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -2826,6 +2905,7 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem {
@@ -3548,6 +3628,25 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   title: string | null;
 }
 
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -3557,6 +3656,7 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem {
@@ -4281,6 +4381,25 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   title: string | null;
 }
 
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -4290,6 +4409,7 @@ export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_S
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_landingSectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem {
@@ -5048,6 +5168,25 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   title: string | null;
 }
 
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -5057,6 +5196,7 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_EpgCollection_itemsConnection_items_StationItem {
@@ -5759,6 +5899,25 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   title: string | null;
 }
 
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -5768,6 +5927,7 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_ScheduleCollection_itemsConnection_items_StationItem {
@@ -6470,6 +6630,25 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   title: string | null;
 }
 
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -6479,6 +6658,7 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_OnAirCollection_itemsConnection_items_StationItem {
@@ -7181,6 +7361,25 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   title: string | null;
 }
 
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -7190,6 +7389,7 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_PlaceholderCollection_itemsConnection_items_StationItem {
@@ -7912,6 +8112,25 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   title: string | null;
 }
 
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -7921,6 +8140,7 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_UserlistCollection_itemsConnection_items_StationItem {
@@ -8645,6 +8865,25 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   title: string | null;
 }
 
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images = MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_Image | MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -8654,6 +8893,7 @@ export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface MPlayPage_getPage_sectionInterfacesConnection_sections_Section_collections_VideoCollection_itemsConnection_items_StationItem {

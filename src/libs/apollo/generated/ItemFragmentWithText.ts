@@ -623,6 +623,25 @@ export interface ItemFragmentWithText_StationItem_additionalLabel {
   title: string | null;
 }
 
+export interface ItemFragmentWithText_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface ItemFragmentWithText_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type ItemFragmentWithText_StationItem_listings_images = ItemFragmentWithText_StationItem_listings_images_Image | ItemFragmentWithText_StationItem_listings_images_ImagePlaceholder;
+
 export interface ItemFragmentWithText_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -632,6 +651,7 @@ export interface ItemFragmentWithText_StationItem_listings {
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: ItemFragmentWithText_StationItem_listings_images[] | null;
 }
 
 export interface ItemFragmentWithText_StationItem {

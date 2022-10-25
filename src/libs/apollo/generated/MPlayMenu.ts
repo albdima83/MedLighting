@@ -19,7 +19,7 @@ export interface MPlayMenu_getNav_items_items_NavItem {
   __typename: "NavItem";
   id: string;
   title: string | null;
-  icon: string | null;
+  icon: any | null;
   /**
    * Disable this entry if the user is not logged
    */

@@ -677,6 +677,25 @@ export interface CollectionFragment_itemsConnection_items_StationItem_additional
   title: string | null;
 }
 
+export interface CollectionFragment_itemsConnection_items_StationItem_listings_images_Image {
+  __typename: "Image";
+}
+
+export interface CollectionFragment_itemsConnection_items_StationItem_listings_images_ImagePlaceholder {
+  __typename: "ImagePlaceholder";
+  agency: string | null;
+  id: string;
+  engine: string;
+  type: string;
+  r: string;
+  /**
+   * Low Quality Image Placeholder. TBD
+   */
+  imagePreview: string | null;
+}
+
+export type CollectionFragment_itemsConnection_items_StationItem_listings_images = CollectionFragment_itemsConnection_items_StationItem_listings_images_Image | CollectionFragment_itemsConnection_items_StationItem_listings_images_ImagePlaceholder;
+
 export interface CollectionFragment_itemsConnection_items_StationItem_listings {
   __typename: "Listing";
   startTime: any | null;
@@ -686,6 +705,7 @@ export interface CollectionFragment_itemsConnection_items_StationItem_listings {
   liveAllowed: boolean | null;
   title: string | null;
   description: string | null;
+  images: CollectionFragment_itemsConnection_items_StationItem_listings_images[] | null;
 }
 
 export interface CollectionFragment_itemsConnection_items_StationItem {

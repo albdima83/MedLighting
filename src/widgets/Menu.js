@@ -11,10 +11,6 @@ export default class Menu extends Lightning.Component {
         rect: true,
         colorLeft: 0xff000000,
         colorRight: 0x00000000,
-        MenuList: {
-          type: List,
-          direction: 'column',
-        },
       },
       MenuList: {
         type: List,
@@ -58,9 +54,7 @@ export default class Menu extends Lightning.Component {
       console.log(item)
       mItems.push({
         type: MenuItem,
-        label: item.title,
-        id: item.id,
-        selected: item.selected,
+        item: item,
       })
     })
     console.log(mItems)
@@ -131,18 +125,33 @@ export default class Menu extends Lightning.Component {
 class MenuItem extends Lightning.Component {
   static _template() {
     return {
+      Image: {
+        w: 40,
+        h: 40,
+      },
       Label: {
-        text: { fontSize: 28, fontFace: 'Regular', color: 'red' },
+        x: 48,
+        text: { fontSize: 16, fontFace: 'Regular' },
       },
     }
   }
 
-  set label(v) {
-    this._label = v
-
+  set item(item) {
+    console.log('@@@@ item menu')
+    console.log(item)
+    this._item = item
     this.patch({
+      Image: {
+        texture: {
+          type: Lightning.textures.ImageTexture,
+          src: item.icon,
+          mount: 0,
+          resizeMode: { type: 'contain', w: 30, h: 30 },
+        },
+      },
       Label: {
-        text: { text: this._label },
+        x: 48,
+        text: { text: item.title },
       },
     })
   }

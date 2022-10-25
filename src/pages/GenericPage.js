@@ -1,6 +1,6 @@
-import { Router, Colors } from '@lightningjs/sdk'
+import { Router } from '@lightningjs/sdk'
 import { List } from '@lightningjs/ui'
-import { HorizontalList } from '../components/HorizontalList'
+import { VideoList } from '../components/carousels/VideoList'
 import Page from '../utils/page'
 import apollo from '../libs/apollo/index'
 import { GET_PAGE } from '../libs/apollo/queries'
@@ -32,21 +32,37 @@ export default class GenericPage extends Page {
         w: this.w,
         h: this.h * 0.5,
       },
+      Background: {
+        w: w => w,
+        y: h => h / 2,
+        h: h => h / 2,
+        rect: true,
+        color: 0xff000000,
+      },
       OverlayGradient: {
         w: 60,
         h: h => h,
         rect: true,
         colorLeft: 0xff000000,
         colorRight: 0x00000000,
-        MenuList: {
-          type: List,
-          direction: 'column',
-        },
       },
       PageList: {
+        w: w => w,
+        h: h => h * 2,
         type: List,
-        spacing: 60,
+        spacing: 54,
         direction: 'column',
+      },
+
+      OverlayGradientBottom: {
+        x: 0,
+        y: h => h * 0.8,
+        w: w => w,
+        h: h => h * 0.2,
+        rect: true,
+        colorTop: 0x00000000,
+        colorBottom: 0xaa000000,
+        zIndex: 10,
       },
     }
   }
@@ -137,7 +153,7 @@ export default class GenericPage extends Page {
           case LocalCarouselTemplate.OptionCollection:
           case LocalCarouselTemplate.ScheduleCollection:
             this.cItems.push({
-              type: HorizontalList,
+              type: VideoList,
               item: item,
               h: hItem,
               w: wItem,
@@ -178,7 +194,7 @@ export default class GenericPage extends Page {
       //itemWrapper.setSmooth('alpha', 0)
       let scroll = 0
       if (index > 0) {
-        scroll = this.h / 2 - itemWrapper.assignedY - 30
+        scroll = this.h / 2 - itemWrapper.assignedY - 54
         console.log(`PageList scroll [${scroll}]`)
       }
       return scroll

@@ -44,7 +44,7 @@ export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   },
   [LocalCarouselTemplate.VideoBrandedCollection]:{
       width: 0,
-      height: 440,
+      height: 298,
       itemLayout: {
         x: 40,
         y: 0,
@@ -55,7 +55,7 @@ export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   },
   [LocalCarouselTemplate.OptionCollection]:{
     width: 0,
-    height: 420,
+    height: 298,
     itemLayout: {
       x: 40,
       y: 0,
@@ -66,7 +66,7 @@ export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   },
   [LocalCarouselTemplate.OnAirCollection]:{
     width: 0,
-    height: 440,
+    height: 298,
     itemLayout: {
       x: 40,
       y: 0,
@@ -77,7 +77,7 @@ export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   },
   [LocalCarouselTemplate.ScheduleCollection]:{
     width: 0,
-    height: 440,
+    height: 298,
     itemLayout: {
       x: 40,
       y: 0,
@@ -110,7 +110,7 @@ export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   },
   [LocalCarouselTemplate.KeyFrameCollection]:{
     width: 0,
-    height: 440,
+    height: 298,
     itemLayout: {
       x: 40,
       y: 0,
@@ -121,7 +121,7 @@ export const LayoutTemplates:LayoutTemplate<CarouselLayout> = {
   },
   [LocalCarouselTemplate.PosterCollection]:{
     width: 0,
-    height: 480,
+    height: 360,
     itemLayout: {
       x: 30,
       y: 0,

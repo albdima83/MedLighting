@@ -19,7 +19,7 @@ export interface NavItemFragment {
   __typename: "NavItem";
   id: string;
   title: string | null;
-  iconReference: string | null;
+  icon: any | null;
   /**
    * Disable this entry if the user is not logged
    */

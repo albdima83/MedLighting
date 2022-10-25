@@ -1,74 +1,114 @@
 import { Lightning, Colors, Router } from '@lightningjs/sdk'
 import { width, height } from '../libs/helpers/screenHelper'
 import Page from '../utils/page'
+import { VideoPlayer } from '@metrological/sdk'
+import { ScreenWidth, ScreenHeight } from '../utils/screen'
 
 const precision = 1
 const withPrecision = val => Math.round(precision * val) + 'px'
+const interfaceTimeout = 5000
 
-export default class VideoPage extends Page {
+class PlayerControllerView extends Lightning.Component {
   static _template() {
     return {
-      Video: {
-        alpha: 1,
-        visible: false,
-        pivot: 0.5,
-        texture: { type: Lightning.textures.StaticTexture, options: {} },
+      color: Colors('red').get(),
+      rect: true,
+    }
+  }
+}
+
+export default class VideoPage extends Lightning.Component {
+  static _template() {
+    return {
+      h: ScreenHeight(),
+      w: ScreenWidth(),
+      rect: true,
+      color: Colors('#000').get(),
+      Ui: {
+        type: PlayerControllerView,
+        x: 0,
+        y: h => h * 0.6,
+        w: w => w,
+        h: h => h * 0.4,
       },
     }
   }
 
   _handleLeft() {
+    console.log('VideoPage _handleLeft')
     Router.back()
   }
 
   _handleUp() {
-    Router.focusWidget('PlayerControl')
-    this.widgets.playercontrol.show()
+    console.log('VideoPage _handleUp')
+    this._inactive()
+  }
+
+  _getFocused() {
+    console.log('VideoPage _getFocused')
+    return this.tag('Ui')
+  }
+
+  _setInterfaceTimeout() {
+    // Clear timeout if it already exists
+    if (this._timeout) {
+      clearTimeout(this._timeout)
+    }
+
+    this._timeout = setTimeout(() => {
+      this._toggleInterface(false)
+    }, interfaceTimeout)
+  }
+
+  _toggleInterface(visible) {
+    this.patch({
+      smooth: {
+        color: [0x00000000],
+      },
+      /*
+      Ui: {
+        smooth: {
+          y: [visible ? this.h / 2 : this.h],
+          alpha: [visible ? 1 : 0],
+        },
+      },*/
+    })
   }
 
   _play(url) {
-    const videoEls = document.getElementsByTagName('video')
-    if (videoEls && videoEls.length) {
-      const video = videoEls[0]
-      video.pause()
-      video.setAttribute('src', url)
-      video.load()
-      video.play()
-    }
+    const tagVideo = this.tag('VideoPlayer')
+    console.log(tagVideo)
+    tagVideo.open(url)
   }
 
-  _setupVideoTag() {
-    const videoEls = document.getElementsByTagName('video')
-    if (videoEls && videoEls.length) {
-      return videoEls[0]
-    } else {
-      const videoEl = document.createElement('video')
-      const platformSettingsWidth = width
-      const platformSettingsHeight = height
-      videoEl.setAttribute('id', 'video-player')
-      videoEl.setAttribute('width', withPrecision(platformSettingsWidth))
-      videoEl.setAttribute('height', withPrecision(platformSettingsHeight))
-      videoEl.style.background = 'black'
-      videoEl.style.position = 'absolute'
-      videoEl.style.zIndex = '1'
-      //videoEl.style.display = 'none'
-      //videoEl.style.visibility = 'hidden'
-      videoEl.style.top = withPrecision(0)
-      videoEl.style.left = withPrecision(0)
-      videoEl.style.width = withPrecision(platformSettingsWidth)
-      videoEl.style.height = withPrecision(platformSettingsHeight)
-      document.body.appendChild(videoEl)
-      return videoEl
-    }
+  _active() {
+    console.log('VideoPage _active')
+    Router.focusPage()
+  }
+
+  _inactive() {
+    VideoPlayer.hide()
+    VideoPlayer.clear()
+    this.patch({
+      smooth: {
+        color: [0xff444444],
+      },
+    })
   }
 
   _firstActive() {
-    this._play(
+    this._toggleInterface(true)
+    VideoPlayer.consumer(this)
+    VideoPlayer.size(width, height)
+    VideoPlayer.open(
       'https://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_multichannel_subs.m3u8'
     )
   }
 
   _init() {
-    this._setupVideoTag()
+    // Initially video control interface is visible
+    this._interfaceVisible = true
+    // This variable will store timeout id for the interface hide functionality
+    this._timeout = null
   }
 }

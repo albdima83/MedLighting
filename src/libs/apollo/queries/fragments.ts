@@ -775,6 +775,18 @@ fragment DetailItemFragment on Item{
     audioLanguages,
     subLanguages
   }
+  ... on StationItem{
+    callSign
+    listings{
+        guid
+        title
+        description
+        rating
+        liveAllowed
+        restartAllowed
+        images
+    }
+  }
   
 }
 `;
@@ -915,6 +927,7 @@ fragment DetailStaticFragment on Item{
 }
 `;
 
+/*
 export const DataSourceFragment = gql`
 fragment DataSourceFragment on Item{
       id
@@ -940,9 +953,14 @@ fragment DataSourceFragment on Item{
         callSign
         listings{
             guid
+            title
+            description
+            rating
             liveAllowed
             restartAllowed
+            images
         }
       }
 }	
 `;
+*/

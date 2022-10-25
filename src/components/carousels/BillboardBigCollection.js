@@ -7,7 +7,7 @@ import ImageHelper from '../../libs/helpers/imageHelper'
 export class BillboardBigCollection extends Lightning.Component {
   static _template() {
     return {
-      Fill: { w: w => w, h: h => h, color: Colors('#222').get(), rect: true },
+      Fill: { w: w => w, h: h => h, color: Colors('#000').get(), rect: true },
       Backgrounds: {
         w: w => w,
         h: h => h,
@@ -36,11 +36,57 @@ export class BillboardBigCollection extends Lightning.Component {
         colorBottom: 0xff000000,
         colorTop: 0x00000000,
       },
+      ContentData: {
+        x: 32,
+        y: 54,
+        w: w => w * 0.6,
+        h: h => h * 0.6,
+        color: 0xffaaaaaa,
+        clipped: true,
+        Logo: {
+          x: 0,
+          w: w => w,
+          h: 150,
+          color: 0xffeeaa88,
+          rect: true,
+          visible: false,
+        },
+        Title: {
+          x: 0,
+          w: w => w,
+          color: 0xffeeaa88,
+          rect: true,
+          visible: false,
+          Label: {
+            w: w => w,
+            text: {
+              maxLines: 2,
+              text:
+                'TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO TITOLO',
+              fontSize: 38,
+              fontFace: 'Regular',
+            },
+          },
+        },
+        Subtitle: {
+          x: 0,
+          w: w => w,
+          visible: false,
+          color: 0xffeeaa88,
+          rect: true,
+          Label: {
+            text: {
+              maxLines: 3,
+              text: 'SOTTOTITOLO',
+              fontSize: 28,
+              fontFace: 'Regular',
+            },
+          },
+        },
+      },
       HList: {
         x: 32,
         w: w => w,
-        y: h => h - 260,
-        mountY: 1,
         type: List,
         direction: 'row',
         signals: { onIndexChanged: '_onHlistIndexChanged' },
@@ -87,6 +133,60 @@ export class BillboardBigCollection extends Lightning.Component {
   _firstActive() {
     this._loaded = true
     this._changeBackground(this._currentIndex)
+    const itHeight = !!this._item.layout.itemLayout.height
+      ? getCarouselHeight(this.h, this._item.layout.itemLayout.height || 0)
+      : 0
+
+    this.tag('HList').patch({
+      y: this.h - itHeight - 34,
+    })
+  }
+
+  _updateContentPreview(tag, contentPreview) {
+    const { title, subtitle, logo } = contentPreview
+    const tContentData = this.tag(tag)
+    let y = 0
+    if (!!logo) {
+      y += 150 + 10
+      tContentData.tag('Logo').patch({
+        visible: true,
+        h: 150,
+        w: 320,
+        texture: {
+          type: Lightning.textures.ImageTexture,
+          src: 'https://newctv.eu.ngrok.io/static/images/logo-mplay-infinity-new.png',
+          resizeMode: { type: 'cover', h: 150, w: 320 },
+          clipY: 0,
+        },
+      })
+    } else {
+      tContentData.tag('Logo').patch({
+        visible: false,
+      })
+    }
+    if (!!title) {
+      tContentData.tag('Title').patch({
+        y: y,
+        text: { tex: title },
+        visible: true,
+      })
+      y += 80 + 10
+    } else {
+      tContentData.tag('Logo').patch({
+        visible: false,
+      })
+    }
+    if (!!subtitle) {
+      tContentData.tag('Subtitle').patch({
+        y: y,
+        text: { tex: title },
+        visible: true,
+      })
+    } else {
+      tContentData.tag('Subtitle').patch({
+        visible: false,
+      })
+    }
   }
 
   _updateList() {
@@ -137,6 +237,8 @@ export class BillboardBigCollection extends Lightning.Component {
       this._skip = true
       return
     }
+    console.log('@@@ BillbaordCollection _setBackground')
+    console.log(this._item)
     const dimension = { width: this.w, height: this.h }
     console.log(dimension)
     let imgUrl = ImageHelper.getImageURL(item.images, 'image_header_poster', dimension, '@2')
@@ -164,6 +266,12 @@ export class BillboardBigCollection extends Lightning.Component {
       alpha: 0.001,
     })
     this._backgroundIndex ^= 1
+    /*
+    this._updateContentPreview('ContentData', {
+      logo: 'https://newctv.eu.ngrok.io/static/images/logo-mplay-infinity-new.png',
+      title: 'jlkhjew hwerjk hwekjrhwejkr hwejk rhewjkrh wejkr',
+      subtitle: '324234 jwekr',
+    })*/
   }
 
   _construct() {

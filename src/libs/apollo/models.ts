@@ -1,8 +1,15 @@
+import { MImage } from "../models/app.models";
 
 //export type LabelsProps = LabelReferenceProps & LabelProps;
 export interface ContentPreviewData {
-	backgroundImageUrl?: string | null | undefined;
+	imgsLogo?: Array<MImage>;
+	imgsBackground?: Array<MImage>;
+	templateLogo?:string | null | undefined;
+	fallabckTemplateLogo?: string | null | undefined;
 	logoUrl?: string| null | undefined;
+	templateBackground?:string | null | undefined;
+	fallabckTemplateBackground?: string | null | undefined;
+	backgroundImageUrl?: string | null | undefined;
 	logoFallbackTitle?: string| null | undefined;
 	showOnAirLabel?: string| null | undefined;
 	subtitle?: string| null | undefined;

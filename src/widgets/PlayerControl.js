@@ -32,10 +32,13 @@ class ExampleButton extends Lightning.Component {
 export default class PlayerControl extends Lightning.Component {
   static _template() {
     return {
-      Fill: { x: 0, y: 0, w: w => w, h: h => h / 2, color: Colors('#222').get(), rect: true },
-      Buttons: {
-        LeftButton: { type: ExampleButton, buttonText: 'Left' },
-        RightButton: { x: 200, type: ExampleButton, buttonText: 'Right' },
+      Fill: {
+        x: 0,
+        y: h => h,
+        w: w => w,
+        h: h => h / 2,
+        color: Colors('#red').get(),
+        rect: true,
       },
     }
   }
@@ -70,16 +73,14 @@ export default class PlayerControl extends Lightning.Component {
   }
 
   show() {
-    /*
     this.patch({
-      smooth: { alpha: 1 },
-    })*/
+      smooth: { alpha: 1, y: this.h / 2 },
+    })
   }
 
   hide() {
-    /*
     this.patch({
-      smooth: { alpha: 0, y: -1 * this.h },
-    })*/
+      smooth: { alpha: 0, y: this.h },
+    })
   }
 }

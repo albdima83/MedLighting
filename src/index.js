@@ -3,27 +3,33 @@ import App from './App.js'
 import { ScreenWidth, ScreenHeight } from './utils/screen'
 
 const appSettings = {
-  debug: true,
+  debug: false,
   stage: {
     w: ScreenWidth(),
     h: ScreenHeight(),
     clearColor: '0x00000000',
     useImageWorker: true,
   },
-  //useImageWorker: true,
-  //inspector: true,
-  //esEnv: 'es5'
 }
 
 const platformSettings = {
   path: './static',
-  log: true,
+  log: false,
+  inspector: false,
   lazyCreate: false,
   lazyDestroy: false,
   gcOnUnload: false,
   backtracking: true,
   reuseInstance: false,
   destroyOnHistoryBack: true,
+  showFps: {
+    interval: 500,
+    log: false,
+    threshold: 3,
+  },
+  image: {
+    quality: 0.8,
+  },
   //proxyUrl: 'https://proxyURL.com',
 }
 /*
@@ -36,6 +42,7 @@ options.keys = {
     83: "Search" // Map s to search
 };
 */
+
 export default function() {
   return Launch(App, appSettings, platformSettings, ...arguments)
 }

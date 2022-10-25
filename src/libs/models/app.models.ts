@@ -1,3 +1,4 @@
+import { ContentPreviewData } from '../apollo/models';
 import {RtiLabUiKit} from './rti.models';
 
 export enum LocalCarouselTemplate {
@@ -95,6 +96,7 @@ export interface CarouselItem {
   additionals?: Record<string, string>;
   subItems?: Array<CarouselItem>;
   forLoading?: boolean;
+  contentPreviewData?: ContentPreviewData | null;
 }
 
 export interface CarouselExtraData {
@@ -128,6 +130,7 @@ export interface Carousel {
   images?: Array<MImage>;
   extras?: CarouselExtraData | null;
   pageInfo?: PageInfo | null;
+  hasContentPreview?:boolean;
 }
 
 export interface ItemLink {

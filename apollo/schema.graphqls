@@ -1,0 +1,1975 @@
+"""Tells the service which mutation triggers this subscription."""
+directive @aws_subscribe(
+  """
+  List of mutations which will trigger this subscription when they are called.
+  """
+  mutations: [String!]
+) on FIELD_DEFINITION
+
+directive @cacheControl(maxAge: Int, sMaxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT
+
+type Action {
+  id: ActionId!
+  params: [KeyValueParam!]
+}
+
+type ActionButton {
+  icon: URL!
+  iconClose: URL!
+  items: [ActionButtonItem!]!
+}
+
+type ActionButtonItem {
+  icon: URL
+  iconOn: URL
+  link: Link!
+  subtitle: String
+  title: String
+}
+
+enum ActionId {
+  LIKING_WIDGET_MODAL
+  LIVE_CLIPS
+  SCROLL
+  STATIONS
+  TYPEFORM_MODAL
+  VOTING_WIDGET_MODAL
+}
+
+type AdvContext {
+  adUnit: String
+  advSiteSection: String
+  fwCallSignSuffix: String
+  pageUrl: URL
+}
+
+type AnalyticsContext {
+  advSiteSection: String
+  brand: String
+  contentId: String
+  contentType: String
+  pageId: String
+  pageSection: String
+  pageSubsection: String
+  pageSubsubsection: String
+  pageTitle: String
+  pageType: String
+  pageUrl: URL
+  publishDate: DateTime
+}
+
+type ArticleItem implements Item {
+  additionalLabel: Label
+  analyticsContext: ItemAnalyticsContext
+  cardAdditionalTitles: [VisualLink!]
+  cardAttributes: CardAttributes
+  cardBadgeLabel: String
+  cardCtas: [VisualLink!]
+
+  """card detail"""
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+
+  """List of live updates for this item"""
+  cardLiveUpdates: [LiveUpdate!]
+  cardPlayer: CardPlayer
+  cardRelatedItems: [Item!]
+  cardSubtitles: [VisualLink!]
+  cardText: String
+  cardTime: String
+  cardTitle: String
+  category: [Category!]
+  channelLabel: LabelReference
+  channelLabels: [LabelReference!]
+  date: DateTime
+  editorialLabels: [LabelUnion!]
+  eyelet: String
+  id: ID
+
+  """
+  In TGCOM, represents the property of the single item (eg. Sportmediaset/Meteo)
+  """
+  property: String
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+type BreakingItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTime: String
+  cardTitle: String
+  id: ID
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+enum CacheControlScope {
+  PRIVATE
+  PUBLIC
+}
+
+type CardAttributes {
+  bgColor: HexColorCode
+  bgGradient: Gradient
+  cardCarouselInterval: Int
+  flags: [CardFlag!]
+  layout: CardLayout
+  textColor: HexColorCode
+  variant: CardVariant
+}
+
+enum CardFlag {
+  """Video should start in autoplay"""
+  AUTOPLAY
+
+  """
+  If this flag is returned, the client should add a border to the card contents
+  """
+  BORDER
+
+  """
+  If this flag is returned, the client should render the appropriate badge
+  """
+  GALLERY
+
+  """If this flag is returned, the CTA should be full size"""
+  SHOW_CTA_FULL_WIDTH
+
+  """
+  If this flag is returned, the client should render live updates for this item
+  """
+  SHOW_LIVE_UPDATES
+
+  """
+  If this flag is returned, the client should render related items for this item
+  """
+  SHOW_RELATED
+
+  """
+  If this flag is returned, the client should render related items images along the related item
+  """
+  SHOW_RELATED_IMAGE
+
+  """
+  If this flag is returned, the client should render the appropriate badge
+  """
+  VIDEO
+}
+
+enum CardLayout {
+  IMAGE_BOTTOM
+  IMAGE_CENTERED
+  IMAGE_LEFT
+  IMAGE_TOP
+}
+
+type CardPlayer {
+  advContext: ItemAdvContext
+  analyticsContext: ItemAnalyticsContext
+  callSign: String
+  guid: String
+  previewTimeout: Int
+}
+
+enum CardVariant {
+  """MPlay: EPG for Live Page"""
+  EPG_LIVE
+
+  """MPlay: EPG for Station Page"""
+  EPG_STATION
+  FULL_WIDTH
+  MEDIA
+
+  """TGCOM Uses this to render a podcast"""
+  PODCAST
+
+  """TGCOM uses this to render radio card"""
+  RADIO
+
+  """TGCom uses this for the softnews items"""
+  SOFT_NEWS
+  SPONSORED_CONTENT
+
+  """TGCOM Uses this to show white background on BreakingItem"""
+  ULTIMISSIMA
+
+  """TGCOM Uses this to show red background on BreakingItem"""
+  ULTIMORA
+}
+
+type Category {
+  id: String!
+  label: String!
+}
+
+interface Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+type CollectionAnalyticsContext {
+  recoTrackId: String
+}
+
+type CollectionAttributes {
+  bgColor: HexColorCode
+  flags: [CollectionFlag!]
+  interval: Int
+  layout: CollectionLayout
+  refreshInterval: Int
+  ride: Boolean @deprecated
+  template: CollectionTemplate
+  textColor: HexColorCode
+  timeSlideshow: Int
+  variant: CollectionVariant
+  wrap: Boolean @deprecated
+}
+
+enum CollectionFilter {
+  AUDIO_ORIG
+  SUBTITLES_ITA
+  SUBTITLES_ORIG
+}
+
+type CollectionFilterDetails {
+  id: CollectionFilter!
+  label: String!
+}
+
+enum CollectionFlag {
+  """First element of the list has an highlight"""
+  FIRST_HIGHLIGHTED
+
+  """
+  Mplay: If this flag is set, this component should be hidden if the user is an Ex Premium
+  """
+  HIDE_EX_PREMIUM
+
+  """Show card logo: mostrare il logo del brand nelle card"""
+  SHOW_CARD_LOGO
+
+  """Show link: in sportm è il link vedi tutti"""
+  SHOW_LINK
+
+  """Show live clips: in mplay rappresenta la livepreview"""
+  SHOW_LIVE_CLIPS
+
+  """
+  MPlay: If this flag is set, this component should split between possessed options
+  """
+  SHOW_MY_OPTIONS
+
+  """
+  Mplay: If this flag is set, this component should be shown ONLY if the user has 4k HDR/SDR compatibility
+  """
+  SHOW_ONLY_4KHDR
+
+  """
+  Mplay: If this flag is set, this component should be shown ONLY if the user has 4k SDR compatibility
+  """
+  SHOW_ONLY_4KSDR
+
+  """
+  Mplay: If this flag is set, this component should be shown ONLY if the user is an Ex Premium
+  """
+  SHOW_ONLY_EX_PREMIUM
+
+  """Show title: in sportm/tgcom mostra il titolo della collection"""
+  SHOW_TITLE
+}
+
+enum CollectionLayout {
+  GRID
+  LISTING
+  SLIDER
+}
+
+enum CollectionSort {
+  EXPIRATION_ASC
+  MOST_VIEWED_DESC
+  RELEVANCE_DESC
+  TITLE_ASC
+  YEAR_DESC
+}
+
+type CollectionSortDetails {
+  id: CollectionSort!
+  label: String!
+}
+
+enum CollectionTemplate {
+  """Mplay: HeroCollection [CollectionLayout = SLIDER]"""
+  BILLBOARD
+
+  """Tgcom24: GenericCollection dailynews [CollectionLayout = LISTING]"""
+  CALENDAR
+
+  """WittyTV"""
+  CARD_IMAGE_TOP
+
+  """Mplay: VideoCollection [CollectionLayout = SLIDER]"""
+  CATCHUP
+
+  """Tgcom24: GenericCollection Digest [CollectionLayout = LISTING]"""
+  DIGEST
+
+  """Mplay: EpgCollection [CollectionLayout = LISTING], EPG Page"""
+  EPG
+
+  """MPlay"""
+  FAQ
+
+  """Mplay: HeroCollection [CollectionLayout = SLIDER]"""
+  INLINE
+
+  """Mplay"""
+  KEYFRAME
+
+  """Mplay: EpgCollection [CollectionLayout = LISTING], Live TV Guide"""
+  LIVE
+
+  """TGCOM - Media carousels"""
+  MEDIA
+
+  """Mplay"""
+  NAV
+
+  """MPlay"""
+  OPTIONS
+
+  """Mplay: VideoCollection [CollectionLayout = SLIDER]"""
+  PLAYLIST
+
+  """
+  Mplay: VideoCollection | SeriesCollection | SeasonCollection | MovieCollection [CollectionLayout = SLIDER|GRID]
+  """
+  POSTER
+
+  """Mplay: PrimeTimeCollection [CollectionLayout = SLIDER]"""
+  PRIMETIME
+
+  """MPlay - ScheduleCollection"""
+  SCHEDULE
+
+  """MPlay - ScheduleCollection"""
+  SCHEDULE_HIGHLIGHT
+
+  """Mplay"""
+  SQUARED
+
+  """Mplay: EpgCollection [CollectionLayout = LISTING], Station TV Guide"""
+  STATION
+
+  """Tgcom24: GenericCollection latest_news [CollectionLayout = LISTING]"""
+  TIMELINE
+
+  """Mplay: VideoCollection [CollectionLayout = SLIDER]"""
+  VIDEO_BRANDED
+
+  """Mplay: VideoCollection [CollectionLayout = SLIDER]"""
+  VIDEO_PREVIEW
+
+  """Mplay: VideoCollection [CollectionLayout = SLIDER]"""
+  VIDEO_RELATED
+}
+
+enum CollectionVariant {
+  BIG
+  LARGE
+  MEDIUM
+  SMALL
+}
+
+type ColorSchema {
+  """Alert color"""
+  alertColor: HexColorCode
+
+  """Page background color"""
+  bgColor: HexColorCode
+
+  """Cards/Articles/Sidebar + nav buttons"""
+  cardBgColor: HexColorCode
+
+  """Buttons text color"""
+  ctaTextColor: HexColorCode
+
+  """Theme color"""
+  mainColor: HexColorCode
+
+  """Nav Top/Bottom background color"""
+  navBgColor: HexColorCode
+
+  """Nav Dropdowns background color"""
+  navSecondaryBgColor: HexColorCode
+
+  """Tab menus background color"""
+  tabBgColor: HexColorCode
+
+  """Color of the selected menu items"""
+  tabFocusColor: HexColorCode
+
+  """main text color"""
+  textColor: HexColorCode
+}
+
+type CuePoint {
+  endTime: Float
+  startTime: Float
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+type DetailPage implements PageInterface {
+  actionButton: ActionButton
+  advContext: AdvContext
+  analyticsContext: AnalyticsContext
+  channel: String @deprecated(reason: "use option")
+
+  """
+  This represents the master of the information that has to be rendered by the client
+  """
+  dataSource: Item!
+  id: ID!
+  landingSectionInterfacesConnection(after: String, first: Int): SectionInterfacesConnection
+  landingSectionsConnection(after: String, first: Int): SectionsConnection @deprecated(reason: "Use landingSectionInterfacesConnection")
+  lastModified: DateTime
+  metadata: PageMetadata
+  option: String
+  requiredChannelRight: String
+  sectionInterfacesConnection(after: String, first: Int): SectionInterfacesConnection
+  sectionsConnection(after: String, first: Int): SectionsConnection @deprecated(reason: "Use sectionInterfacesConnection")
+
+  """Will be filled only for LivePage, to be used for stations logics"""
+  stations: [StationItem!]
+  subscribedCtaLink: Link
+  title: String
+  type: PageType
+  url: URL
+}
+
+type EpgCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  stationFilters: [StationFilter!] @deprecated(reason: "use stationFiltersV2")
+  stationFiltersV2: [StationFilter!]
+  title: String
+}
+
+type FaqCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+type GalleryItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAdditionalTitles: [VisualLink!]
+  cardAttributes: CardAttributes
+  cardBadgeLabel: String
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+
+  """List of live updates for this item"""
+  cardLiveUpdates: [LiveUpdate!]
+  cardPlayer: CardPlayer
+
+  """List of related items for this item"""
+  cardRelatedItems: [Item!]
+  cardSubtitles: [VisualLink!]
+  cardText: String
+  cardTitle: String
+  category: [Category!]
+  date: DateTime
+  description: String
+  eyelet: String
+  gallery: [Image!]!
+  galleryType: GalleryType!
+  id: ID
+
+  """
+  In TGCOM, represents the property of the single item (eg. Sportmediaset/Meteo)
+  """
+  property: String
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+enum GalleryType {
+  INFOGRAPHIC
+  PHOTOGALLERY
+}
+
+type GenericCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+type GenericItem implements Item {
+  additionalLabel: Label
+  analyticsContext: ItemAnalyticsContext
+  cardAdditionalTitles: [VisualLink!]
+  cardAttributes: CardAttributes
+  cardBadgeLabel: String
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+
+  """List of live updates for this item"""
+  cardLiveUpdates: [LiveUpdate!]
+  cardPlayer: CardPlayer
+  cardRelatedItems: [Item!]
+  cardSubtitles: [VisualLink!]
+  cardText: String
+  cardTime: String
+  cardTitle: String
+  channelLabel: LabelReference
+  channelLabels: [LabelReference!]
+  date: DateTime
+  editorialLabels: [LabelUnion!]
+  eyelet: String
+  id: ID
+
+  """
+  In TGCOM, represents the property of the single item (eg. Sportmediaset/Meteo)
+  """
+  property: String
+  rating: String
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+type GenericMetadata implements PageMetadata {
+  colorSchema: ColorSchema
+  ctaLink: Link
+  headerNav: Nav
+  headerNavItems: [NavItemInterface!] @deprecated(reason: "use headerNav")
+  images: [ImageUnion!]
+  navItems: [NavItemInterface!]
+}
+
+type Gradient {
+  angle: Int
+  endColor: HexColorCode!
+  startColor: HexColorCode!
+}
+
+type HeroCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+"""
+A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors.
+"""
+scalar HexColorCode
+
+type HtmlParagraph {
+  html: String
+  title: String
+}
+
+type Image {
+  agency: String
+  caption: String
+  format: String!
+  h: Int!
+
+  """Low Quality Image Placeholder. TBD"""
+  imagePreview: String
+  url: URL!
+  w: Int!
+}
+
+enum ImageEngine {
+  """Accedo - MAM Kolumbus (mplay)"""
+  am
+
+  """Custom implementation"""
+  custom
+
+  """DDG -  Kolumbus (tgcom/sport)"""
+  dk
+
+  """DDG - Piksel (mplay)"""
+  dp
+
+  """MAM DSH Accedo (mplay)"""
+  ma
+
+  """MAM DSH Kolumbus (tgcom/sport)"""
+  mk
+
+  """MPX - Listings (mplay EPG)"""
+  ml
+
+  """MPX - Program (mplay)"""
+  mp
+
+  """TEMPORARY: MPX - Program (prod override)"""
+  mpprod
+
+  """MPX - Station (mplay)"""
+  ms
+
+  """MPX - Series (mplay)"""
+  mse
+
+  """MPX - Tv Season (mplay)"""
+  mst
+
+  """NowNext feeds"""
+  nn
+}
+
+type ImagePlaceholder {
+  agency: String
+  caption: String
+  engine: String!
+  id: String!
+
+  """Low Quality Image Placeholder. TBD"""
+  imagePreview: String
+  r: String!
+  type: String!
+}
+
+"""
+This type represents an Union of Images (standard images)
+and ImagePlaceholders (images) served via the new engine methodology
+"""
+union ImageUnion = Image | ImagePlaceholder
+
+interface Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  id: ID
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+"""TBD"""
+type ItemAdvContext {
+  """Used for players"""
+  advSiteSection: String
+  fwCallSignSuffix: String
+}
+
+type ItemAnalyticsContext {
+  contentId: String
+  trackId: String
+}
+
+union ItemParagraph = HtmlParagraph
+
+type ItemsConnection {
+  items: [Item!]
+  pageInfo: PageInfo!
+}
+
+input KeyValueInput {
+  key: String!
+  value: String!
+}
+
+type KeyValueParam {
+  """example: UxReference | ContentId"""
+  key: String!
+
+  """The value corresponding to the specified key"""
+  value: String!
+}
+
+type Label {
+  """Colore dello sfondo della label"""
+  bgColor: HexColorCode
+
+  """Opacità (0-1)"""
+  bgOpacity: Float
+  id: String
+
+  """Immagine della label in versione large. Campo alternativo a title"""
+  imageLarge: URL
+
+  """Immagine della label in versione small. Campo alternativo a title"""
+  imageSmall: URL
+  subtitle: String
+
+  """Colore del testo"""
+  textColor: HexColorCode
+
+  """Titolo della label. Campo alternativo a imageLarge/imageSmall"""
+  title: String
+
+  """
+  Tipo della label, per applicare eventuali logiche custom (es. blink dell'oggetto Ora In Onda)
+  """
+  type: String
+}
+
+type LabelReference {
+  """
+  Parametro opzionale rappresentante una data da inserire negli eventuali placeholder della label
+  """
+  endDate: DateTime
+
+  """Rappresenta l'ID della label da ricercare nel dizionario di label"""
+  id: String!
+
+  """
+  Parametro opzionale rappresentante una data da inserire negli eventuali placeholder della label
+  """
+  startDate: DateTime
+}
+
+union LabelUnion = LabelReference
+
+type LandingItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  id: ID
+  promoCodeLabel: String
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+type Link {
+  action: Action
+  behavior: String
+  referenceId: String
+  referenceType: ReferenceType
+  target: LinkTarget
+  type: LinkType!
+
+  """url|reference"""
+  value: String!
+}
+
+enum LinkTarget {
+  BLANK
+  SELF
+}
+
+enum LinkType {
+  NAMEDURL
+  SELF
+  URL
+}
+
+type Listing {
+  description: String
+  editorialType: String
+  endTime: DateTime
+  guid: String
+  hasVod: Boolean
+  images: [ImageUnion!]
+  link: Link
+  liveAllowed: Boolean
+  rating: String
+  restartAllowed: Boolean
+  seriesGuid: String
+  shortDescription: String
+  startTime: DateTime
+  title: String
+}
+
+type LivePreviewCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  episodeId: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+type LiveUpdate {
+  datetime: DateTime!
+  title: String!
+}
+
+type Media {
+  cuePoints: [CuePoint!]
+  publicUrl: URL!
+}
+
+type MixedCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  filters: [CollectionFilterDetails!]
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  sorts: [CollectionSortDetails!]
+  title: String
+}
+
+type MovieCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  filters: [CollectionFilterDetails!]
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  sorts: [CollectionSortDetails!]
+  title: String
+}
+
+type Nav implements NavInterface {
+  hideForChannelRights: [String!]
+  id: ID
+  items: [NavItemInterface!]
+  position: Position
+  showForChannelRights: [String!]
+  showForKids: Boolean
+  title: String
+}
+
+type NavBar {
+  items: [NavInterface!]
+  logo: URL
+  logoOn: URL
+}
+
+type NavCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+interface NavInterface {
+  hideForChannelRights: [String!]
+  id: ID
+  items: [NavItemInterface!]
+  position: Position
+  showForChannelRights: [String!]
+  showForKids: Boolean
+  title: String
+}
+
+type NavItem implements NavItemInterface {
+  """Disable this entry if the user is not logged"""
+  disableForNotLogged: Boolean!
+  hideForChannelRights: [String!]
+
+  """Hide this entry if the user is logged"""
+  hideForLogged: Boolean!
+
+  """Hide this entry if the user is not logged"""
+  hideForNotLogged: Boolean!
+
+  """Hide this entry if the menu is not shown"""
+  hideIfMinimized: Boolean!
+  icon: URL
+  iconOn: URL
+  id: ID!
+  link: Link
+  showForChannelRights: [String!]
+  showForKids: Boolean
+  subItems: [NavInterface!]
+  title: String
+}
+
+interface NavItemInterface {
+  """Disable this entry if the user is not logged"""
+  disableForNotLogged: Boolean!
+  hideForChannelRights: [String!]
+
+  """Hide this entry if the user is logged"""
+  hideForLogged: Boolean!
+
+  """Hide this entry if the user is not logged"""
+  hideForNotLogged: Boolean!
+
+  """Hide this entry if the menu is not shown"""
+  hideIfMinimized: Boolean!
+  icon: URL
+  iconOn: URL
+  id: ID!
+  showForChannelRights: [String!]
+  showForKids: Boolean
+  subItems: [NavInterface!]
+  title: String
+}
+
+union NextItem = PlaceholderItem | VideoItem
+
+type OnAirCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  stationFilters: [StationFilter!] @deprecated(reason: "use stationFiltersV2")
+  stationFiltersV2: [StationFilter!]
+  title: String
+}
+
+type Option {
+  boxRectangular: URL
+  extendedLogo: URL
+  extendedLogoSecondary: URL
+  hiddenChannelLabelsIds: [String!]
+  id: String!
+  landingCtaLink: Link
+  landingImageCtv: URL
+  landingMultipleChoiceWeb: URL
+  name: String!
+  navIcon: URL
+  navIconOn: URL
+  overheader: URL
+  premiumExtendedLogoSecondary: URL
+  premiumOverheader: URL
+  shortLogoSecondary: URL
+  showForForeignUsers: Boolean!
+  showInUI: Boolean!
+}
+
+type OptionCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  myOptionsTitle: String
+  title: String
+}
+
+type OptionItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  id: ID
+  serviceId: ID
+  showForForeignUsers: Boolean!
+  title: String
+  url: URL
+}
+
+type Page implements PageInterface {
+  actionButton: ActionButton
+  advContext: AdvContext
+  analyticsContext: AnalyticsContext
+  channel: String @deprecated(reason: "use option")
+  id: ID!
+  landingSectionInterfacesConnection(after: String, first: Int): SectionInterfacesConnection
+  landingSectionsConnection(after: String, first: Int): SectionsConnection @deprecated(reason: "Use landingSectionInterfacesConnection")
+  lastModified: DateTime
+  metadata: PageMetadata
+  option: String
+  requiredChannelRight: String
+  sectionInterfacesConnection(after: String, first: Int): SectionInterfacesConnection
+  sectionsConnection(after: String, first: Int): SectionsConnection @deprecated(reason: "Use sectionInterfacesConnection")
+  subscribedCtaLink: Link
+  title: String
+  type: PageType
+  url: URL
+}
+
+type PageInfo {
+  context: String
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+interface PageInterface {
+  actionButton: ActionButton
+  advContext: AdvContext
+  analyticsContext: AnalyticsContext
+  channel: String @deprecated(reason: "use option")
+  id: ID!
+  landingSectionInterfacesConnection(after: String, first: Int): SectionInterfacesConnection
+  landingSectionsConnection(after: String, first: Int): SectionsConnection @deprecated(reason: "Use landingSectionInterfacesConnection")
+  lastModified: DateTime
+  metadata: PageMetadata
+  option: String
+  requiredChannelRight: String
+  sectionInterfacesConnection(after: String, first: Int): SectionInterfacesConnection
+  sectionsConnection(after: String, first: Int): SectionsConnection @deprecated(reason: "Use sectionInterfacesConnection")
+  subscribedCtaLink: Link
+  title: String
+  type: PageType
+  url: URL
+}
+
+interface PageMetadata {
+  colorSchema: ColorSchema
+  ctaLink: Link
+  headerNav: Nav
+  headerNavItems: [NavItemInterface!] @deprecated(reason: "use headerNav")
+  images: [ImageUnion!]
+  navItems: [NavItemInterface!]
+}
+
+enum PageType {
+  article
+  breakingnews
+  dailynews
+  digest
+  epg
+  homepage
+  latestnews
+  listing
+  listing_userlist
+  live
+  movie
+  playlist
+  search
+  sectionpage
+  series
+  softnews
+  static
+  station
+  userlist
+  video
+  video24
+  webview
+}
+
+type PickerItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+
+  """Inside PickerItem represents the list of the picker"""
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  id: ID
+  serviceId: ID
+  title: String
+
+  """Inside PickerItem represents the URL of the current page"""
+  url: URL
+}
+
+"""Collection that will be rendered by the client"""
+type PlaceholderCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+
+  """
+  Every resolverType has a definite list of params. This generic list contains them
+  """
+  resolverParams: [KeyValueParam!]
+
+  """
+  This is a pre-shared list of types that will need to be handled by the client
+  """
+  resolverType: String!
+  title: String
+}
+
+type PlaceholderItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  id: ID
+  resolverParams: [KeyValueParam!]
+  resolverType: String!
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+type PlaceholderNav implements NavInterface {
+  hideForChannelRights: [String!]
+  id: ID
+  items: [NavItemInterface!]
+  position: Position
+  resolverParams: [KeyValueParam!]
+  resolverType: String!
+  showForChannelRights: [String!]
+  showForKids: Boolean
+  title: String
+}
+
+type PlaceholderNavItem implements NavItemInterface {
+  """Disable this entry if the user is not logged"""
+  disableForNotLogged: Boolean!
+  hideForChannelRights: [String!]
+
+  """Hide this entry if the user is logged"""
+  hideForLogged: Boolean!
+
+  """Hide this entry if the user is not logged"""
+  hideForNotLogged: Boolean!
+
+  """Hide this entry if the menu is not shown"""
+  hideIfMinimized: Boolean!
+  icon: URL
+  iconOn: URL
+  id: ID!
+  resolverParams: [KeyValueParam!]
+  resolverType: String!
+  showForChannelRights: [String!]
+  showForKids: Boolean
+  subItems: [NavInterface!]
+  title: String
+}
+
+type PlaceholderSection implements SectionInterface {
+  attributes: SectionAttributes
+  id: ID
+  link: Link
+
+  """
+  Every resolverType has a definite list of params. This generic list contains them
+  """
+  resolverParams: [KeyValueParam!]
+
+  """
+  This is a pre-shared list of types that will need to be handled by the client
+  """
+  resolverType: String!
+  title: String
+}
+
+enum Platform {
+  AMAZON_ANDROIDTV
+  ANDROID
+  APPLE_TVOS
+  CTV @deprecated(reason: "Use a specific value")
+  GENERIC_ANDROIDTV
+
+  """Use this value for generic simulators via web"""
+  GENERIC_TVSIMULATOR
+  GOOGLE_ANDROIDTV
+  HISENSE_VIDAA
+  IOS
+  LGE_NETCAST
+  LGE_WEBOS
+  LG_NETCAST @deprecated(reason: "Use LGE_NETCAST")
+  LG_WEBOS @deprecated(reason: "Use LGE_WEBOS")
+  MICROSOFT_XBOX360
+  MICROSOFT_XBOXONE
+  NVIDIA_ANDROIDTV
+  PANASONIC_VIERA
+  PHILIPS_ANDROIDTV
+  PHILIPS_WHALEOS
+  SAMSUNG_ORSAY
+  SAMSUNG_TIZEN
+  SONY_ANDROIDTV
+  SONY_CEB
+  SONY_PS3
+  SONY_PS4
+  TIMBOX_ANDROIDTV
+  VODAFONETV
+  WEB
+}
+
+type PodcastItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  category: [Category!]
+  date: DateTime
+  description: String
+  duration: Int
+  eyelet: String
+
+  """id CMS vertical"""
+  id: ID
+
+  """source"""
+  media: Media!
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+enum Position {
+  AFTER
+  BEFORE
+}
+
+type PrimeTimeCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+enum ProgramType {
+  EPISODE
+  EXTRA
+  MOVIE
+}
+
+enum Property {
+  MPLAY
+  SPORTMEDIASET
+  TGCOM24
+  WITTYTV
+}
+
+type QrCodeItem implements Item {
+  actionCreateUrl: URL!
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  id: ID
+  serviceId: ID
+  title: String
+  url: URL
+  vanityUrl: String!
+}
+
+"""Schema version 1.7.2"""
+type Query {
+  """id maps to DDG `id`. templateNames are to be used by MPlay"""
+  getArticlePage(id: ID!, seriesMetadataTemplateName: String, stationMetadataTemplateName: String, templateName: String): DetailPage
+
+  """
+  Get a collection. If resolverType && resolverParams are provided the collection will be resolved. Context may be included if passed in the collection pageInfo
+  """
+  getCollection(context: String, id: ID!, resolverParams: [KeyValueInput!], resolverType: String): Collection
+
+  """Date in format YYYY-MM-DD"""
+  getEpgPage(date: String!): Page
+
+  """
+  id maps to `{id}` on TGCom/Sport; type should depend on the url of the object. templateName is to be used by MPlay
+  """
+  getGalleryPage(id: ID!, templateName: String, type: GalleryType!): DetailPage
+  getItem(id: ID!): Item
+
+  """Get a dictionary of labels, based on the dictionary ID."""
+  getLabels(id: ID!): [Label!]
+  getListingPage(filter: CollectionFilter, id: ID!, seriesMetadataTemplateName: String, sort: CollectionSort, stationMetadataTemplateName: String): Page
+
+  """
+  Retrieves a list of clips. EpisodeId = GUID of the episode program; ts = timestamp (rounded to the nearest minute)
+  """
+  getLiveClips(episodeId: ID!, ts: Int): [VideoItem!]
+
+  """Retrieves a list of clips by callSign"""
+  getLiveClipsByCallSign(callSign: ID!): [VideoItem!]
+
+  """templateName is to be used by MPlay"""
+  getLivePage(id: ID!, templateName: String): DetailPage
+
+  """id maps to `{guid}` on Mplay. templateName is to be used by MPlay"""
+  getMoviePage(id: ID!, templateName: String): DetailPage
+
+  """
+  NOTE: this calls ignores the User attribute inside the Context for loggedIn/Paying, for now
+  """
+  getNav(id: ID!): NavBar
+
+  """Retrieves the next episode."""
+  getNextEpisode(id: ID!): VideoItem
+
+  """Retrieves a list of next episodes relative to the current."""
+  getNextEpisodes(id: ID!, items: Int = 3): [VideoItem!]
+
+  """Retrieves next similar video."""
+  getNextSimilar(id: ID!, resolverParams: [KeyValueInput!]!): VideoItem
+
+  """Get a dictionary of options, based on the dictionary ID."""
+  getOptions(id: ID!): [Option!]
+
+  """id maps to `{type}/{id}` on DDG and to `{entryId}` on Accedo"""
+  getPage(id: ID!): Page
+
+  """Used to retrieve playlists. Not to be used in TVs"""
+  getPlaylistPage(id: ID!): Page
+
+  """id maps to DDG `id`"""
+  getRecipePage(id: ID!): DetailPage
+
+  """Search"""
+  getSearchPage(channel: String, property: String, query: String, uxReference: String): Page
+
+  """Get a list of seasons for the specified series."""
+  getSeasons(seriesGuid: ID!): [SeasonItem!]
+
+  """
+  Get a section. If resolverType && resolverParams are provided the section will be resolved.
+  """
+  getSection(id: ID!, resolverParams: [KeyValueInput!], resolverType: String): SectionInterface
+
+  """templateName is to be used by MPlay"""
+  getSeriesPage(id: ID!, metadataTemplateName: String, templateName: String): DetailPage
+
+  """templateName is to be used by MPlay"""
+  getStaticPage(id: ID!, templateName: String): DetailPage
+
+  """templateName is to be used by MPlay"""
+  getStationPage(id: ID!, metadataTemplateName: String, templateName: String): DetailPage
+  getStations(stationGroup: String): [StationItem!]
+
+  """
+  Get a collection. If resolverType && resolverParams are provided the collection will be resolved. Context may be included if passed in the collection pageInfo
+  """
+  getUserlistCollection(context: String, id: ID!, resolverParams: [KeyValueInput!], resolverType: String, tvodGuids: [String!]): Collection
+  getUserlistPage(id: ID!, tvodGuids: [String!]): Page
+
+  """id maps to `{guid}` on Mplay"""
+  getVideoItem(id: ID!): VideoItem
+
+  """
+  id maps to `{id}` on TGCom/Sport and to `{guid}` on Mplay. templateName is to be used by MPlay
+  """
+  getVideoPage(id: ID!, templateName: String): DetailPage
+
+  """Currently used only in Witty"""
+  getWebviewPage(id: ID!): Page
+}
+
+type RecipeItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardBadgeLabel: String
+  cardCtas: [VisualLink!]
+
+  """card detail"""
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardPlayer: CardPlayer
+  cardText: String
+  cardTitle: String
+  category: [Category!]
+  date: DateTime
+  eyelet: String
+  id: ID
+
+  """
+  In TGCOM, represents the property of the single item (eg. Sportmediaset/Meteo)
+  """
+  property: String
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+enum ReferenceType {
+  article
+  browsepage
+  crm
+  crmticket
+  epgpage
+  externalpage
+  homepage
+  homeuser
+  infographic
+  listingpage
+  listingpage_userlist
+  live
+  livelist
+  movie
+  namedurl
+  photogallery
+  playlistpage
+  podcast
+  purchasecampaign
+  purchaseoption
+  purchaseproduct
+  purchasepromocode
+  purchasetvod
+  radiolist
+  recipe
+  restart
+  self
+  series
+  share
+  staticpage
+  staticqr
+  station
+  userlist
+  video
+  webview
+}
+
+"""DRAFT"""
+type Schedule {
+  callSign: String
+  description: String
+  logo: ImagePlaceholder
+}
+
+type ScheduleCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  title: String
+}
+
+type SeasonCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  filters: [CollectionFilterDetails!]
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  sorts: [CollectionSortDetails!]
+  title: String
+}
+
+type SeasonItem implements Item {
+  actors: [String!]
+  additionalLabel: Label
+  additionalLinks: [VisualLink!]
+  analyticsContext: ItemAnalyticsContext
+  audioLanguages: [String!]
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEditorialMetadata: String
+  cardEditorialMetadataRating: String
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTime: String
+  cardTitle: String
+  channelLabel: LabelReference
+  channelLabels: [LabelReference!]
+  conductors: [String!]
+  description: String
+  directors: [String!]
+  editorialLabels: [LabelUnion!]
+  editorialMetadata: String
+  editorialMetadataRating: String
+  expirationDate: DateTime
+  genres: [String!]
+  guid: String!
+  id: ID
+  images: [ImageUnion!]
+  primaryGenre: String
+  rating: String
+  schedules: [Schedule!]
+  seasonNumber: Int
+  seasonTitle: String
+
+  """Represents the default episode if bookmark is missing"""
+  selectedEpisodeLink: VisualLink
+
+  """ID of the related Series"""
+  seriesGuid: String
+  serviceId: ID
+  subLanguages: [String!]
+  title: String
+
+  """Trailer"""
+  trailer: VideoItem
+  url: URL
+  year: String
+}
+
+type Section implements SectionInterface {
+  attributes: SectionAttributes
+  collections: [Collection]
+  id: ID
+  link: Link
+  title: String
+}
+
+type SectionAttributes {
+  flags: [SectionFlag!]
+}
+
+enum SectionFlag {
+  TAB
+  USERLIST_FAVOURITES_SERIES_SQUARED
+}
+
+interface SectionInterface {
+  attributes: SectionAttributes
+  id: ID
+  link: Link
+  title: String
+}
+
+type SectionInterfacesConnection {
+  pageInfo: PageInfo!
+  sections: [SectionInterface!]!
+}
+
+type SectionsConnection {
+  pageInfo: PageInfo!
+  sections: [Section!]!
+}
+
+type SeriesCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  filters: [CollectionFilterDetails!]
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  sorts: [CollectionSortDetails!]
+  title: String
+}
+
+type SeriesItem implements Item {
+  additionalLabel: Label
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEditorialMetadata: String
+  cardEditorialMetadataRating: String
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTime: String
+  cardTitle: String
+  channelLabel: LabelReference
+  channelLabels: [LabelReference!]
+  description: String
+  editorialLabels: [LabelUnion!]
+  editorialMetadata: String
+  editorialMetadataRating: String
+  facebookPageUrl: String
+  genres: [String!]
+  guid: String!
+  id: ID
+  images: [ImageUnion!]
+  instagramId: String
+  primaryGenre: String
+  rating: String
+
+  """Represents the list of seasons"""
+  seasons: [SeasonItem!]
+
+  """Represents the currently selected season"""
+  selectedSeason: SeasonItem
+  serviceId: ID
+  title: String
+  twitterId: String
+  url: URL
+  year: String
+}
+
+type SeriesMetadata implements PageMetadata {
+  colorSchema: ColorSchema
+  ctaLink: Link
+  headerNav: Nav
+  headerNavItems: [NavItemInterface!] @deprecated(reason: "use headerNav")
+  images: [ImageUnion!]
+  navItems: [NavItemInterface!]
+  seriesGuid: String
+}
+
+type StaticItem implements Item {
+  analyticsContext: ItemAnalyticsContext
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardText: String
+  cardTitle: String
+  content: [ItemParagraph!]
+  eyelet: String
+  id: ID
+  serviceId: ID
+  title: String
+  url: URL
+}
+
+type StationFilter {
+  channel: String! @deprecated(reason: "use id field, matched against StationItem.stationGroups")
+  channelRight: String! @deprecated(reason: "use id field, matched against StationItem.stationGroups")
+  id: String!
+  label: String!
+  option: String
+  showForForeignUsers: Boolean!
+}
+
+type StationItem implements Item {
+  additionalLabel: Label
+  advContext: ItemAdvContext @deprecated(reason: "this is not used")
+  analyticsContext: ItemAnalyticsContext
+  callSign: String!
+  cardAttributes: CardAttributes
+  cardCtas: [VisualLink!]
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+  cardPlayer: CardPlayer
+  cardText: String
+  cardTitle: String
+  castAllowed: Boolean!
+
+  """ MediasetPlay | Infinity ; used for stationFilters"""
+  channel: String @deprecated(reason: "Use stationGroups")
+  channelLabel: LabelReference
+  channelLabels: [LabelReference!]
+
+  """
+  First AVOD channelright or First NON_avod channel right (..._SVOD/..._TVOD)
+  """
+  channelRight: String
+  channelRightFilter: String @deprecated(reason: "Use stationGroups")
+
+  """
+  List of all channel rights without technical data (_any, _all, rightonly)
+  """
+  channelRights: [String!]
+
+  """First non_avod content right (SVOD/TVOD)"""
+  contentRight: String
+  ctaLinkForNotSubscribedUser: Link
+  editorialLabels: [LabelUnion!]
+  fwCallSignSuffix: String @deprecated(reason: "use cardPlayer.advContext.fwCallSignSuffix or Page.advContext.fwCallSignSuffix")
+  geographicArea: String
+  guid: String! @deprecated(reason: "This field is useless")
+  id: ID
+  images: [ImageUnion!]
+  listings: [Listing!]
+  liveAllowed: Boolean!
+  relatedStationItems: [StationItem!]
+  relatedStations: [String!] @deprecated(reason: "use relatedStationItems")
+  restartAllowed: Boolean!
+  serviceId: ID
+  showForKids: Boolean
+  stationGroups: [String!]
+  textForNotSubscribedUser: String
+  title: String
+  url: URL
+}
+
+type StationMetadata implements PageMetadata {
+  colorSchema: ColorSchema
+  ctaLink: Link
+  headerNav: Nav
+  headerNavItems: [NavItemInterface!] @deprecated(reason: "use headerNav")
+  images: [ImageUnion!]
+  navItems: [NavItemInterface!]
+}
+
+"""Schema version 1.7.2"""
+type Subscription {
+  onNewLiveClip(callSign: String, episodeId: String): VideoItem
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+"""Collection that will be rendered by the client"""
+type UserlistCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  emptyDescription: String
+  emptyTitle: String
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  notLoggedCtaLink: VisualLink
+  notLoggedDescription: String
+  notLoggedTitle: String
+  resolved: Boolean!
+
+  """
+  Every resolverType has a definite list of params. This generic list contains them
+  """
+  resolverParams: [KeyValueParam!]
+
+  """
+  This is a pre-shared list of types that will need to be handled by the client.
+  Values: 'watchlist' | continue-watching' | 'favourites-series' | 'tvod'
+  """
+  resolverType: String!
+  title: String
+}
+
+type VideoCollection implements Collection {
+  analyticsContext: CollectionAnalyticsContext
+  attributes: CollectionAttributes
+  brandReference: String
+  ctas: [VisualLink!]
+  description: String
+  filters: [CollectionFilterDetails!]
+  hideForChannelRights: [String!]
+  id: ID
+  images: [ImageUnion!]
+  itemsConnection(after: String, first: Int): ItemsConnection
+  link: Link
+  sorts: [CollectionSortDetails!]
+  title: String
+}
+
+type VideoItem implements Item {
+  actors: [String!]
+  additionalLabel: Label
+  advContext: ItemAdvContext @deprecated(reason: "This is not used.")
+  analyticsContext: ItemAnalyticsContext
+  audioLanguages: [String!]
+  callSign: String
+  cardAdditionalTitles: [VisualLink!]
+  cardAttributes: CardAttributes
+  cardBadgeLabel: String
+  cardCtas: [VisualLink!]
+  cardEditorialMetadata: String
+  cardEditorialMetadataRating: String
+  cardEyelet: String
+  cardImages: [ImageUnion!]
+  cardLink: Link
+
+  """List of live updates for this item"""
+  cardLiveUpdates: [LiveUpdate!]
+  cardPlayer: CardPlayer
+  cardPreviewTimeout: Int @deprecated(reason: "use CardPlayer.PreviewTimeout")
+  cardRelatedItems: [Item!]
+  cardSubtitles: [VisualLink!]
+  cardText: String
+  cardTime: String
+  cardTitle: String
+  castAllowed: Boolean!
+  category: [Category!]
+  channelLabel: LabelReference
+  channelLabels: [LabelReference!]
+
+  """
+  First AVOD channelright or First NON_avod channel right (..._SVOD/..._TVOD)
+  """
+  channelRight: String
+
+  """
+  List of all channel rights without technical data (_any, _all, rightonly)
+  """
+  channelRights: [String!]
+  conductors: [String!]
+
+  """First non_avod content right (SVOD/TVOD)"""
+  contentRight: String
+  country: String
+  date: DateTime
+  description: String
+  directors: [String!]
+  downloadEnabled: Boolean
+  duration: Int
+  editorialLabels: [LabelUnion!]
+  editorialMetadata: String
+  editorialMetadataRating: String
+  editorialType: String
+  episodeId: ID
+  expirationDate: DateTime
+  eyelet: String
+  genres: [String!]
+  guid: String!
+
+  """id CMS vertical"""
+  id: ID
+  images: [ImageUnion!]
+  lastPublishDate: DateTime
+
+  """Next2Play"""
+  nextVideo: NextItem
+  numberOfViews: Int
+
+  """Link of the parent for this content (series / movie)"""
+  parentLink: Link
+  primaryGenre: String
+  programType: ProgramType!
+
+  """Populated only in userlist"""
+  progressPercentage: Int
+
+  """
+  In TGCOM, represents the property of the single item (eg. Sportmediaset/Meteo)
+  """
+  property: String
+  rating: String
+  seasonTitle: String
+
+  """
+  If the content is associated to a series, here you will find it. Related season can be found in series.selectedSeason. Use with care.
+  """
+  series: SeriesItem
+  serviceId: ID
+  stationName: String
+  subLanguages: [String!]
+  title: String
+
+  """Trailer"""
+  trailer: VideoItem
+  typology: String
+  url: URL
+  year: String
+}
+
+type VideoMetadata implements PageMetadata {
+  colorSchema: ColorSchema
+  ctaLink: Link
+  currentVideoBadgeOn: Boolean
+  headerNav: Nav
+  headerNavItems: [NavItemInterface!] @deprecated(reason: "use headerNav")
+  images: [ImageUnion!]
+  navItems: [NavItemInterface!]
+  nextVideoBadgeOn: Boolean
+}
+
+type VideoTag {
+  scheme: String!
+  title: String!
+}
+
+type VisualLink {
+  action: Action
+  behavior: String
+  color: HexColorCode
+  iconReference: String
+
+  """The title of the link"""
+  label: String
+  referenceId: String
+  referenceType: ReferenceType
+  target: LinkTarget
+  type: LinkType!
+
+  """url|reference"""
+  value: String!
+}

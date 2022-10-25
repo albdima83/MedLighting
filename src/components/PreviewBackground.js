@@ -1,4 +1,4 @@
-import { Img, Lightning, Utils, Colors } from '@lightningjs/sdk'
+import { Img, Lightning, Utils, Colors, VideoPlayer } from '@lightningjs/sdk'
 import ImageHelper from '../libs/helpers/imageHelper'
 
 export default class PreviewBackground extends Lightning.Component {
@@ -7,27 +7,78 @@ export default class PreviewBackground extends Lightning.Component {
       Backgrounds: {
         w: w => w,
         h: h => h,
+        color: 0xff00000000,
+        rect: true,
         BackgroundA: {
           w: w => w,
           h: h => h,
-          //colorLeft: 0x50ffffff,
-          //colorRight: 0x0090cea1,
         },
         BackgroundB: {
           w: w => w,
           h: h => h,
-          //colorLeft: 0x40ffffff,
-          //colorRight: 0x0090cea1,
         },
       },
-      OverlayGradient: {
+      OverlayGradientW: {
         w: w => 0.8 * w,
         h: h => h,
         rect: true,
         colorLeft: 0xff000000,
         colorRight: 0x00000000,
       },
+      OverlayGradient: {
+        x: 0,
+        y: h => h * 0.3,
+        w: w => w,
+        h: h => h * 0.7,
+        rect: true,
+        colorBottom: 0xff000000,
+        colorTop: 0x00000000,
+      },
     }
+  }
+
+  _clearVideoTimeout() {
+    if (this._timeout) {
+      clearTimeout(this._timeout)
+    }
+  }
+
+  _setVideoTimeout() {
+    console.log('@@@@@ _setVideoTimeout')
+    console.log('@@@@@ _setVideoTimeout')
+    // Clear timeout if it already exists
+    this._clearVideoTimeout()
+    this._timeout = setTimeout(() => {
+      console.log('@@@@@ _showVideBackground')
+      this._showVideBackground()
+    }, 3000)
+  }
+
+  _hideVideBackground() {
+    VideoPlayer.hide()
+    this.tag('Backgrounds').patch({
+      smooth: {
+        color: [0xff000000],
+        alpha: 1,
+      },
+    })
+  }
+
+  _showVideBackground() {
+    console.log('@@@@@ _showVideBackground')
+    console.log('@@@@@ _showVideBackground')
+    console.log('@@@@@ _showVideBackground')
+    VideoPlayer.show()
+    VideoPlayer.size(this.width, this.height)
+    VideoPlayer.open(
+      'https://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_multichannel_subs.m3u8'
+    )
+    this.tag('Backgrounds').patch({
+      smooth: {
+        color: [0x00000000],
+        alpha: 0,
+      },
+    })
   }
 
   _active() {
@@ -39,6 +90,7 @@ export default class PreviewBackground extends Lightning.Component {
 
   _init() {
     this._index = 0
+    this._timeout = null
     this.tag('BackgroundA').on('txLoaded', () => {
       console.log('@@@ ContentPreview BackgroundA LOADED')
       this.tag('BackgroundA').setSmooth('alpha', 1, {
@@ -103,12 +155,15 @@ export default class PreviewBackground extends Lightning.Component {
   }
 
   _attach() {
+    VideoPlayer.consumer(this)
+    VideoPlayer.size(this.w, this.h)
     ;['setBackground', 'setItem', 'readyForBackground'].forEach(event => {
       this.application.on(event, this.listeners[event])
     })
   }
 
   _detach() {
+    VideoPlayer.hide()
     ;['setBackground', 'setItem', 'readyForBackground'].forEach(event => {
       this.application.off(event, this.listeners[event])
     })
@@ -119,6 +174,8 @@ export default class PreviewBackground extends Lightning.Component {
       this._skip = true
       return
     }
+    this._hideVideBackground()
+    this._clearVideoTimeout()
     const dimension = { width: this.width, height: this.height }
     console.log(dimension)
     const imgUrl = ImageHelper.getImageURL(
@@ -145,5 +202,6 @@ export default class PreviewBackground extends Lightning.Component {
       alpha: 0.001,
     })
     this._index ^= 1
+    this._setVideoTimeout()
   }
 }

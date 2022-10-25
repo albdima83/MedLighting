@@ -9,8 +9,8 @@ import { LinkType, LinkTarget, ReferenceType } from "./globalTypes";
 // GraphQL fragment: DetailStaticFragment
 // ====================================================
 
-export interface DetailStaticFragment_ArticleItem {
-  __typename: "ArticleItem" | "BreakingItem" | "GalleryItem" | "GenericItem" | "LandingItem" | "OptionItem" | "PickerItem" | "PlaceholderItem" | "PodcastItem" | "RecipeItem" | "SeasonItem" | "SeriesItem" | "StationItem" | "VideoItem";
+export interface DetailStaticFragment_StationItem {
+  __typename: "StationItem" | "VideoItem" | "PlaceholderItem" | "SeriesItem" | "SeasonItem" | "ArticleItem" | "BreakingItem" | "GalleryItem" | "GenericItem" | "LandingItem" | "OptionItem" | "PickerItem" | "PodcastItem" | "RecipeItem";
   title: string | null;
 }
 
@@ -49,4 +49,4 @@ export interface DetailStaticFragment_StaticItem {
   content: DetailStaticFragment_StaticItem_content[] | null;
 }
 
-export type DetailStaticFragment = DetailStaticFragment_ArticleItem | DetailStaticFragment_QrCodeItem | DetailStaticFragment_StaticItem;
+export type DetailStaticFragment = DetailStaticFragment_StationItem | DetailStaticFragment_QrCodeItem | DetailStaticFragment_StaticItem;
