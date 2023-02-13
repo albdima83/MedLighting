@@ -19,11 +19,10 @@ export default class PreviewBackground extends Lightning.Component {
         },
       },
       OverlayGradientW: {
-        w: w => 0.8 * w,
+        w: h => (h * 9) / 16,
         h: h => h,
+        color: 0xff000000,
         rect: true,
-        colorLeft: 0xff000000,
-        colorRight: 0x00000000,
       },
       OverlayGradient: {
         x: 0,
@@ -44,12 +43,9 @@ export default class PreviewBackground extends Lightning.Component {
   }
 
   _setVideoTimeout() {
-    console.log('@@@@@ _setVideoTimeout')
-    console.log('@@@@@ _setVideoTimeout')
     // Clear timeout if it already exists
     this._clearVideoTimeout()
     this._timeout = setTimeout(() => {
-      console.log('@@@@@ _showVideBackground')
       this._showVideBackground()
     }, 3000)
   }
@@ -65,11 +61,10 @@ export default class PreviewBackground extends Lightning.Component {
   }
 
   _showVideBackground() {
-    console.log('@@@@@ _showVideBackground')
-    console.log('@@@@@ _showVideBackground')
-    console.log('@@@@@ _showVideBackground')
     VideoPlayer.show()
-    VideoPlayer.size(this.width, this.height)
+    const width = (this.height * 16) / 9
+    const left = this.width - width
+    VideoPlayer.area(0, this.width, this.height, left)
     VideoPlayer.open(
       'https://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_multichannel_subs.m3u8'
     )
@@ -82,8 +77,6 @@ export default class PreviewBackground extends Lightning.Component {
   }
 
   _active() {
-    console.log(`ContentPreview _firstActive  w:[${this.w}]`)
-    console.log(`ContentPreview _firstActive h:[${this.h}]`)
     this.width = this.w
     this.height = this.h
   }
@@ -92,7 +85,6 @@ export default class PreviewBackground extends Lightning.Component {
     this._index = 0
     this._timeout = null
     this.tag('BackgroundA').on('txLoaded', () => {
-      console.log('@@@ ContentPreview BackgroundA LOADED')
       this.tag('BackgroundA').setSmooth('alpha', 1, {
         duration: 0.6,
         timingFunction: 'cubic-bezier(0.20, 1.00, 0.80, 1.00)',
@@ -104,7 +96,6 @@ export default class PreviewBackground extends Lightning.Component {
     })
 
     this.tag('BackgroundB').on('txLoaded', () => {
-      console.log('@@@ ContentPreview BackgroundB LOADED')
       this.tag('BackgroundB').setSmooth('alpha', 1, {
         duration: 0.6,
         timingFunction: 'cubic-bezier(0.20, 1.00, 0.80, 1.00)',
@@ -147,8 +138,6 @@ export default class PreviewBackground extends Lightning.Component {
           this._skip = true
           return
         }
-        console.log('@@@ setItem')
-        console.log(item)
         this._setBackground(item)
       },
     }
@@ -156,7 +145,6 @@ export default class PreviewBackground extends Lightning.Component {
 
   _attach() {
     VideoPlayer.consumer(this)
-    VideoPlayer.size(this.w, this.h)
     ;['setBackground', 'setItem', 'readyForBackground'].forEach(event => {
       this.application.on(event, this.listeners[event])
     })
@@ -174,23 +162,17 @@ export default class PreviewBackground extends Lightning.Component {
       this._skip = true
       return
     }
-    this._hideVideBackground()
-    this._clearVideoTimeout()
+    //this._hideVideBackground()
+    //this._clearVideoTimeout()
     const dimension = { width: this.width, height: this.height }
-    console.log(dimension)
     const imgUrl = ImageHelper.getImageURL(
       item.images,
       'image_header_poster', //'editorial_image_content_preview',
       dimension
     )
-    console.log('@@@ imgURL')
-    console.log(imgUrl)
     this._src = imgUrl
     if (!!!imgUrl || this._src === this._lastSrc) return
-    console.log('@@@ PreviewBackground _setBackground')
-    console.log(`@@@ this._index: [${this._index}]`)
     this._lastSrc = this._src
-    console.log(this._src)
     //TODO check dimension from parent
     this.tag('Backgrounds').children[this._index].patch({
       texture: {
@@ -202,6 +184,6 @@ export default class PreviewBackground extends Lightning.Component {
       alpha: 0.001,
     })
     this._index ^= 1
-    this._setVideoTimeout()
+    //this._setVideoTimeout()
   }
 }

@@ -2,13 +2,15 @@
   "appSettings": {
     "stage": {
       "clearColor": "0x00000000",
-      "useImageWorker": true
+      "useImageWorker": false,
+      "canvas2d": true
     },
     "debug": false
   },
   "platformSettings": {
     "path": "./static",
-    "log": true,
-    "showVersion": true
+    "log": false,
+    "showVersion": false,
+    "esEnv": "es5"
   }
 }

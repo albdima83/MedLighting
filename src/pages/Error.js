@@ -22,14 +22,10 @@ export default class Error extends Lightning.Component {
     Router.navigate('main')
   }
 
-  _focus() {
-    console.log('focus error page')
-  }
+  _focus() {}
 
   set error(obj) {
     const { page, error } = obj
-    console.log(page, error)
-
     const errorMessage = `
 error while loading page: ${page.constructor.name}
 press enter to navigate to home

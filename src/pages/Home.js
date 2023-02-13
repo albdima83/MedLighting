@@ -12,17 +12,11 @@ export default class Home extends GenericPage {
     }
   }
 
-  _focus() {
-    console.log('Home _focus')
-  }
+  _focus() {}
 
-  _handleAppClose() {
-    console.log('Close app')
-  }
+  _handleAppClose() {}
 
   _handleLeft() {
-    console.log('Home _handleLeft')
-    console.log(this.widgets)
     Router.focusWidget('Menu')
     this.widgets.menu.show()
   }
@@ -40,14 +34,8 @@ export default class Home extends GenericPage {
         first: 0,
       },
     }
-    console.log(data)
     const response = await apollo.query(data)
-    console.log('@@@ _loadData')
-    console.log(response)
-    console.log(this.widgets.menu)
     const mItems = MapperHelper.mapMenu(response.data)
-    console.log('MapperHelper.mapMenu')
-    console.log(mItems)
     this.widgets.menu.items = mItems
   }
 

@@ -2,12 +2,14 @@
   "name": "it.mediaset.lightning",
   "description": "LightningApp",
   "scripts": {
-    "ngrok": "ngrok start --config ./ngrok.yml --region eu newctv",
+    "ngrok": "ngrok start --config ./ngrok.yml --region eu webappctv",
     "apollo-schema": "cd apollo & npx apollo service:download --endpoint=https://mediasetplay-preprod.api-graph.mediaset.it",
-    "apollo-generator": "cd apollo & npx apollo codegen:generate --localSchemaFile=schema.json,schema.graphqls --target=typescript --tagName=gql"
+    "apollo-generator": "cd apollo & npx apollo codegen:generate --localSchemaFile=schema.json,schema.graphqls --target=typescript --tagName=gql",
+    "devtool":"/Applications/Chromium\\ 87.app/Contents/MacOS/Chromium --disable-web-security --user-data-dir=\"./chrome-skytools-userdir\""
   },
   "dependencies": {
     "@apollo/client": "^3.7.0",
+    "@firebolt-js/sdk": "^0.9.0",
     "@lightningjs/sdk": "^5.1.0",
     "@lightningjs/ui": "^1.3.1",
     "@lightningjs/ui-components": "^1.3.1",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
+    "apollo": "^2.34.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.7.0",

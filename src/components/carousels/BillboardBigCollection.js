@@ -95,7 +95,6 @@ export class BillboardBigCollection extends Lightning.Component {
   }
 
   _getFocused() {
-    console.log('BillboardBigCollection _getFocused')
     return this.tag('HList')
   }
   _focus() {
@@ -107,17 +106,12 @@ export class BillboardBigCollection extends Lightning.Component {
   }
 
   set item(it) {
-    console.log('BillboardBigCollection set item')
-    console.log(it)
     this._item = it
     this._updateList()
   }
 
   _onHlistIndexChanged(indexData) {
-    console.log(indexData)
     const { index, previousIndex, dataLength } = indexData
-    console.log('HList onIndexChanged')
-    console.log(`index:[${index}] previousIndex:[${previousIndex}] dataLength:[${dataLength}]`)
     this._changeBackground(index)
   }
 
@@ -190,7 +184,6 @@ export class BillboardBigCollection extends Lightning.Component {
   }
 
   _updateList() {
-    console.log('BillboardBigCollection _updateMenuList')
     const items = []
     const its = this._item.items || []
     const itWidth = !!this._item.layout.itemLayout.width
@@ -202,11 +195,6 @@ export class BillboardBigCollection extends Lightning.Component {
     const itTemplate = this._item.template.itemsTemplateImage || null
     const itFTemplate = this._item.template.itemsFallbackTemplateImage || null
     const showTitle = this._item.layout.itemLayout.showTitle || false
-    console.log(`itWidth: [${itWidth}]`)
-    console.log(`itHeight: [${itHeight}]`)
-    console.log(`itTemplate: [${itTemplate}]`)
-    console.log(`itFTemplate: [${itFTemplate}]`)
-    console.log(its)
     its.forEach(item => {
       items.push({
         type: CarouselItem,
@@ -237,23 +225,15 @@ export class BillboardBigCollection extends Lightning.Component {
       this._skip = true
       return
     }
-    console.log('@@@ BillbaordCollection _setBackground')
-    console.log(this._item)
     const dimension = { width: this.w, height: this.h }
-    console.log(dimension)
     let imgUrl = ImageHelper.getImageURL(item.images, 'image_header_poster', dimension, '@2')
     if (!!!imgUrl) {
       imgUrl = ImageHelper.getImageURL(item.images, 'editorial_image_hero', dimension, '@2')
     }
-    console.log('@@@ imgURL')
-    console.log(imgUrl)
     this._src = imgUrl
 
     if (!!!imgUrl || this._src === this._lastSrc) return
-    console.log('@@@ PreviewBackground _setBackground')
-    console.log(`@@@ this._backgroundIndex: [${this._backgroundIndex}]`)
     this._lastSrc = this._src
-    console.log(this._src)
     this.tag('Backgrounds').children[this._backgroundIndex].patch({
       w: this.w,
       h: this.h,
@@ -282,7 +262,6 @@ export class BillboardBigCollection extends Lightning.Component {
 
   _init() {
     this.tag('BackgroundA').on('txLoaded', () => {
-      console.log('@@@ ContentPreview BackgroundA LOADED')
       this.tag('BackgroundA').setSmooth('alpha', 1, {
         duration: 0.6,
         timingFunction: 'cubic-bezier(0.20, 1.00, 0.80, 1.00)',
@@ -294,7 +273,6 @@ export class BillboardBigCollection extends Lightning.Component {
     })
 
     this.tag('BackgroundB').on('txLoaded', () => {
-      console.log('@@@ ContentPreview BackgroundB LOADED')
       this.tag('BackgroundB').setSmooth('alpha', 1, {
         duration: 0.6,
         timingFunction: 'cubic-bezier(0.20, 1.00, 0.80, 1.00)',

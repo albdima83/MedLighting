@@ -20,44 +20,34 @@ export default class Menu extends Lightning.Component {
   }
 
   _construct() {
-    console.log('Menu _init _construct')
     this._index = 0
     this._items = []
   }
 
   _getFocused() {
-    console.log('Menu _getFocused')
     return this.tag('MenuList')
   }
 
   set items(v) {
-    console.log('Menu set items')
-    console.log(v)
     this._items = v || []
     this._updateMenuList()
   }
 
-  _active() {
-    console.log('Menu _active')
-  }
+  _active() {}
 
   _firstActive() {}
 
   _updateMenuList() {
-    console.log('Menu _updateMenuList')
-    console.log(this._items)
     if (!!!this._items || this._items.length == 0) {
       return
     }
     const mItems = []
     this._items.forEach(item => {
-      console.log(item)
       mItems.push({
         type: MenuItem,
         item: item,
       })
     })
-    console.log(mItems)
     this.tag('MenuList').add(mItems)
   }
 
@@ -137,8 +127,6 @@ class MenuItem extends Lightning.Component {
   }
 
   set item(item) {
-    console.log('@@@@ item menu')
-    console.log(item)
     this._item = item
     this.patch({
       Image: {
@@ -165,14 +153,12 @@ class MenuItem extends Lightning.Component {
   }
 
   _focus() {
-    console.log('MenuItem _focus')
     this.tag('Label').patch({
       color: 0xffffffff,
     })
   }
 
   _unfocus() {
-    console.log('MenuItem _unfocus')
     this.tag('Label').patch({
       color: 0xff767676,
     })

@@ -1,5 +1,5 @@
 # DOWNLOAD NEW SCHEMA
-apollo service:download --endpoint=https://mediasetplay-preprod.api-graph.mediaset.it
+apollo service:download --endpoint=https://bd-dev.api-graph.mediaset.it 
 
 # CODE GENERATE 
 apollo codegen:generate --localSchemaFile=schema.json --includes="./graphqls/*.graphql" --target=typescript --tagName=gql

@@ -73,14 +73,10 @@ export default class GenericPage extends Page {
   }
 
   _active() {
-    console.log('Home _active')
-    console.log(this.widgets)
     Router.focusPage()
   }
 
   _firstActive() {
-    console.log('Home _firstActive')
-    console.log(Router.getActivePage())
     this.tag('ContentPreview').patch({
       w: this.w,
       h: this.h * 0.5,
@@ -88,22 +84,15 @@ export default class GenericPage extends Page {
     this._loadData()
   }
 
-  _focus() {
-    console.log('Home _focus')
-  }
+  _focus() {}
 
   _getFocused() {
-    console.log('Home _getFocused')
     return this.tag('PageList')
   }
 
-  _handleAppClose() {
-    console.log('Close app')
-  }
+  _handleAppClose() {}
 
   _handleLeft() {
-    console.log('Home _handleLeft')
-    console.log(this.widgets)
     Router.focusWidget('Menu')
     this.widgets.menu.show()
   }
@@ -117,19 +106,11 @@ export default class GenericPage extends Page {
     this.cItems = []
     this._items.forEach(item => {
       const type = item.template.localTemplate || -1
-      console.log(`type [${type}]`)
       const template = LocalCarouselTemplate[type]
       const layout = LayoutTemplates[type]
-      console.log(`template [${template}]`)
-      console.log(`layout [${layout}]`)
       if (!!!layout) return
-      console.log(layout)
       const wItem = !!layout ? getCarouselWidth(this.w, layout.width || 0) : 0
       const hItem = !!layout ? getCarouselHeight(this.h, layout.height || 0) : 0
-      console.log(`_loadTemplates w [${this.w}] `)
-      console.log(`_loadTemplates h [${this.h}] `)
-      console.log(`_loadTemplates wItem [${wItem}] `)
-      console.log(`_loadTemplates hItem [${wItem}] `)
       if (hItem > 0) {
         item.layout = layout
         switch (type) {
@@ -168,20 +149,6 @@ export default class GenericPage extends Page {
       const previousIndex = indexData.previousIndex
       const index = indexData.index
       const direction = index > previousIndex ? 1 : -1
-      console.log('PageList scroll')
-      console.log(`PageList previousIndex: [${previousIndex}]`)
-      console.log(`PageList index: [${index}]`)
-      console.log(`PageList direction: [${direction}]`)
-      console.log('PageList itemWrapper')
-      console.log(itemWrapper)
-      console.log('PageList indexData')
-      console.log(indexData)
-      console.log('PageList scroll data')
-      console.log(`assignedX: [${itemWrapper.assignedX}]`)
-      console.log(`assignedY: [${itemWrapper.assignedY}]`)
-      console.log(`_w: [${itemWrapper._w}]`)
-      console.log(`_h: [${itemWrapper._h}]`)
-
       //scrollNext
       if (direction > 0) {
         const nextItemWrapper = this.tag('PageList').itemWrappers[index - 1]
@@ -195,7 +162,6 @@ export default class GenericPage extends Page {
       let scroll = 0
       if (index > 0) {
         scroll = this.h / 2 - itemWrapper.assignedY - 54
-        console.log(`PageList scroll [${scroll}]`)
       }
       return scroll
     }
@@ -211,10 +177,7 @@ export default class GenericPage extends Page {
         first: 0,
       },
     }
-    console.log(data)
     const response = await apollo.query(data)
-    console.log('@@@ _loadHomePage')
-    console.log(response)
     const sections = response.data.getPage.sectionInterfacesConnection.sections || []
     const cls = MapperHelper.getCarouselsFromSectionInterfaces(sections, null, false)
     const clsSupported =
@@ -224,7 +187,6 @@ export default class GenericPage extends Page {
             CAROUSEL_SUPPORTED.indexOf(cl.template.localTemplate) > -1
           : false
       ) || []
-    console.log(clsSupported)
     this._items = clsSupported
     this._loadTemplates()
   }

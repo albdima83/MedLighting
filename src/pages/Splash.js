@@ -48,9 +48,6 @@ export default class Splash extends Page {
 
   async _loadApplication() {
     AppConfig.remoteConfig = RemoteConfigMockup
-    console.log('_loadApplication')
-    console.log(`AppConfig.navMain: [${AppConfig.navMain}]`)
-    console.log(`AppConfig.homepage: [${AppConfig.homepage}]`)
     const data = await APIService.anonymousLogin()
     if (data) {
       try {
@@ -60,7 +57,6 @@ export default class Splash extends Page {
         console.log(ex)
       }
     }
-    console.log('@@@ change root')
     Router.navigate('home', false)
   }
 
@@ -70,7 +66,6 @@ export default class Splash extends Page {
 
   _init() {
     this.tag('Logo').on('txLoaded', () => {
-      console.log(`this.h: [${this.h}]`)
       this.tag('Logo').setSmooth('alpha', 1)
       //this.tag('Logo').setSmooth('y', this.h / 2)
       this.tag('Background').setSmooth('scale', 1)

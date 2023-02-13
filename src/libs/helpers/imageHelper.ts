@@ -56,14 +56,15 @@ class ImageHelper {
     path = path.replace('{r}', hImage.r ?? '');
     path = path.replace('{width}', `${Math.ceil(dimension.width)}`);
     path = path.replace('{height}', `${Math.ceil(dimension.height)}`);
+    /*
     if(!!suffix && suffix !== ''){
       if(path.indexOf('?')){
         path = path.replace('?',`${suffix}?`)
       }else{
         path = path + suffix;
       }
-    }
-    path = `https://medproxy.imoobyte.com/imgs/${btoa(encodeURIComponent(path))}`
+    }*/
+    //path = `https://medproxy.imoobyte.com/imgs/${btoa(encodeURIComponent(path))}`
     return path;
   };
 

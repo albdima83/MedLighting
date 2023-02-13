@@ -23,7 +23,7 @@ export default class VideoPage extends Lightning.Component {
       h: ScreenHeight(),
       w: ScreenWidth(),
       rect: true,
-      color: Colors('#000').get(),
+      color: 0xff000000,
       Ui: {
         type: PlayerControllerView,
         x: 0,
@@ -35,17 +35,18 @@ export default class VideoPage extends Lightning.Component {
   }
 
   _handleLeft() {
-    console.log('VideoPage _handleLeft')
     Router.back()
   }
 
   _handleUp() {
-    console.log('VideoPage _handleUp')
-    this._inactive()
+    this._toggleInterface(true)
+  }
+
+  _handleDown() {
+    this._toggleInterface(false)
   }
 
   _getFocused() {
-    console.log('VideoPage _getFocused')
     return this.tag('Ui')
   }
 
@@ -63,26 +64,22 @@ export default class VideoPage extends Lightning.Component {
   _toggleInterface(visible) {
     this.patch({
       smooth: {
-        color: [0x00000000],
+        color: visible ? 0xff000000 : 0x00000000,
       },
-      /*
-      Ui: {
-        smooth: {
-          y: [visible ? this.h / 2 : this.h],
-          alpha: [visible ? 1 : 0],
-        },
-      },*/
     })
+    if (visible) {
+      this._playerAnimation.start()
+    } else {
+      this._playerAnimation.stop()
+    }
   }
 
   _play(url) {
     const tagVideo = this.tag('VideoPlayer')
-    console.log(tagVideo)
     tagVideo.open(url)
   }
 
   _active() {
-    console.log('VideoPage _active')
     Router.focusPage()
   }
 
@@ -99,7 +96,8 @@ export default class VideoPage extends Lightning.Component {
   _firstActive() {
     this._toggleInterface(true)
     VideoPlayer.consumer(this)
-    VideoPlayer.size(width, height)
+    //area(top = 0, right = 1920, bottom = 1080, left = 0)
+    VideoPlayer.area(0, this.w, this.h, 0)
     VideoPlayer.open(
       'https://d3rlna7iyyu8wu.cloudfront.net/skip_armstrong/skip_armstrong_multichannel_subs.m3u8'
     )
@@ -110,5 +108,9 @@ export default class VideoPage extends Lightning.Component {
     this._interfaceVisible = true
     // This variable will store timeout id for the interface hide functionality
     this._timeout = null
+    this._playerAnimation = this.animation({
+      duration: 0.6,
+      actions: [{ t: 'Ui', p: 'alpha', v: { 0: 0, 1: 1 } }],
+    })
   }
 }

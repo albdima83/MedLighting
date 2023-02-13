@@ -28,7 +28,6 @@ export class VideoList extends Lightning.Component {
   }
 
   _getFocused() {
-    console.log('HorizontalList _getFocused')
     return this.tag('HList')
   }
   _focus() {
@@ -47,15 +46,10 @@ export class VideoList extends Lightning.Component {
 
   _loadNext(indexData) {
     const { index, previousIndex, dataLength } = indexData
-    console.log(`HList _onRequestItems [${index}] [${previousIndex}] [${dataLength}]`)
     const items = this._items
     const hList = this.tag('HList')
-    console.log(items)
     return new Promise((resolve, reject) => {
-      console.log('HList _loadNext')
-      console.log(items)
       if (!!items) {
-        console.log(items)
         hList.add(items)
         resolve(items)
       } else {
@@ -70,10 +64,7 @@ export class VideoList extends Lightning.Component {
   }
 
   _onIndexChanged(indexData) {
-    console.log(indexData)
     const { index, previousIndex, dataLength } = indexData
-    console.log('HList onIndexChanged')
-    console.log(`index:[${index}] previousIndex:[${previousIndex}] dataLength:[${dataLength}]`)
     /*
     if (index > 0 && index % 5 == 0) {
       this.tag('HList').setIndex(0)
@@ -81,14 +72,11 @@ export class VideoList extends Lightning.Component {
     */
   }
   set item(it) {
-    console.log('VideoList set item')
-    console.log(it)
     this._item = it
     this._updateList()
   }
 
   _updateList() {
-    console.log('VideoList _updateMenuList')
     const items = []
     const its = this._item.items || []
     const itWidth = !!this._item.layout.itemLayout.width
@@ -106,8 +94,6 @@ export class VideoList extends Lightning.Component {
         text: title,
       },
     })
-    console.log(`itWidth: [${itWidth}]`)
-    console.log(`itHeight: [${itHeight}]`)
     its.forEach(item => {
       items.push({
         type: CarouselItem,

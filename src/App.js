@@ -59,7 +59,6 @@ export default class App extends Router.App {
   }
 
   _setup() {
-    console.log('App _setup')
     Router.startRouter(routes, this)
   }
 

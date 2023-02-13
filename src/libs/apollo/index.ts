@@ -4,8 +4,6 @@ import appconfig from "../configurations/appconfig";
 import AsyncStorage from "../storage";
 import result from './introspections/introspection-result';
 
-console.log(`appconfig.apolloBaseURL: [${appconfig.apolloBaseURL}]`);
-
 const getUserJWT = async (): Promise<any> => { 
   const token = await AsyncStorage.getItem('it.mediaset.authorization')
   return token ? `${token}` : null
@@ -125,9 +123,7 @@ const apolloMemory = new InMemoryCache({
 const authMiddleware = setContext(async (_, { headers }) => {
 	const token = await getUserJWT();
 	const sid = await getUserSid();
-	console.log(`token: [${token}]`);
-	console.log(`sid: [${sid}]`);
-  
+	
 	return {
 	  headers: {
 		...headers,

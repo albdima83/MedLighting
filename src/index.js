@@ -4,11 +4,13 @@ import { ScreenWidth, ScreenHeight } from './utils/screen'
 
 const appSettings = {
   debug: false,
+  enablePointer: false,
   stage: {
     w: ScreenWidth(),
     h: ScreenHeight(),
     clearColor: '0x00000000',
-    useImageWorker: true,
+    useImageWorker: false,
+    canvas2d: true,
   },
 }
 
@@ -22,11 +24,6 @@ const platformSettings = {
   backtracking: true,
   reuseInstance: false,
   destroyOnHistoryBack: true,
-  showFps: {
-    interval: 500,
-    log: false,
-    threshold: 3,
-  },
   image: {
     quality: 0.8,
   },
@@ -42,7 +39,6 @@ options.keys = {
     83: "Search" // Map s to search
 };
 */
-
 export default function() {
   return Launch(App, appSettings, platformSettings, ...arguments)
 }

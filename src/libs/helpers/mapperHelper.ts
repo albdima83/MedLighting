@@ -52,7 +52,6 @@ class MapperHelper {
     variant: string,
   ): CarouselTemplate | null => {
 
-    console.log(`getLocalTemplate [${collection}] [${template}] [${layout}] [${variant}]`);
     const localCarouselTemplate = CarouselTemplates.find(carouselTemplate => {
         return (
           !MapperHelper.isEmpty(carouselTemplate.collection) &&
@@ -76,7 +75,6 @@ class MapperHelper {
     if  (!template || !template.template) {return null;}
     const _template = template.template;
     const contentPreviewData: ContentPreviewData | null = getContentPreviewFromItem(itemFragment)
-    console.log(`@@@ getCarouselItemsFromFragment: [${_template}]`);
     let titleItem = itemFragment.cardTitle ?? '';;
     let eyelet = itemFragment.cardEyelet ?? '';;
     let subtitleItem = '';;
@@ -167,8 +165,6 @@ class MapperHelper {
     if (!!!template || !!!items){
       return [];
     }
-    console.log(`@@@ getCarouselItems :${template.localTemplate}`);
-    console.log(items);
     const carouselItems: Array<CarouselItem> = [];
     for (const item of items) {
       const carouselItem = MapperHelper.getCarouselItemsFromFragment(
@@ -189,7 +185,6 @@ class MapperHelper {
     advContext?: AdvContextFragment | null,
     includePlaceHoder: boolean = true,
   ): Array<Carousel> => {
-    console.log('@@@ getCarouselsFromSection');
     const carouselList: Array<Carousel> = [];
     const collections =
       (
@@ -217,9 +212,6 @@ class MapperHelper {
           layout,
           variant,
         );
-        console.log('==========================================');
-        console.log(`\t RESOLVEID [${id}] [${nameCollection}] [${template}] [${layout}] [${variant}] => [${localTemplate?.localTemplate?.toString()}]`);
-        console.log('==========================================');
         let link: ItemLink | null = null;
         if (!!localTemplate) {
 
@@ -230,7 +222,6 @@ class MapperHelper {
               case 'UserlistCollection':
                 break  
               default:
-                console.log(`@@@ title :${title}`);
                 for (let img of imgs) {
                   if (img as ImageFragment) {
                     const imgAgency = (img as ImageFragment).agency;

@@ -44,19 +44,15 @@ export default class PlayerControl extends Lightning.Component {
   }
 
   _construct() {
-    console.log('Menu _init _construct')
     this._index = 0
     this._items = []
   }
 
   _getFocused() {
-    console.log('Menu _getFocused')
     return this.tag('LeftButton')
   }
 
-  _active() {
-    console.log('Menu _active')
-  }
+  _active() {}
 
   _firstActive() {}
 

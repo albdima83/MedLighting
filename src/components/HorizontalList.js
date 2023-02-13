@@ -18,7 +18,6 @@ export class HorizontalList extends Lightning.Component {
   }
 
   _getFocused() {
-    console.log('HorizontalList _getFocused')
     return this.tag('HList')
   }
   _focus() {
@@ -30,10 +29,7 @@ export class HorizontalList extends Lightning.Component {
   }
 
   _onIndexChanged(indexData) {
-    console.log(indexData)
     const { index, previousIndex, dataLength } = indexData
-    console.log('HList onIndexChanged')
-    console.log(`index:[${index}] previousIndex:[${previousIndex}] dataLength:[${dataLength}]`)
     /*
     if (index > 0 && index % 5 == 0) {
       this.tag('HList').setIndex(0)
@@ -41,14 +37,11 @@ export class HorizontalList extends Lightning.Component {
     */
   }
   set item(it) {
-    console.log('HorizontalList set item')
-    console.log(it)
     this._item = it
     this._updateList()
   }
 
   _updateList() {
-    console.log('HorizontalList _updateMenuList')
     const items = []
     const its = this._item.items || []
     const itWidth = !!this._item.layout.itemLayout.width
@@ -60,8 +53,6 @@ export class HorizontalList extends Lightning.Component {
     const itTemplate = this._item.template.itemsTemplateImage || null
     const itFTemplate = this._item.template.fallBackItemsTemplateImage || null
     const showTitle = this._item.layout.itemLayout.showTitle || false
-    console.log(`itWidth: [${itWidth}]`)
-    console.log(`itHeight: [${itHeight}]`)
     its.forEach(item => {
       items.push({
         type: CarouselItem,
@@ -90,7 +81,6 @@ export class HorizontalList extends Lightning.Component {
   _init() {}
 
   static get height() {
-    console.log(`get height: [${this._height}]`)
     return this._height
   }
 }
